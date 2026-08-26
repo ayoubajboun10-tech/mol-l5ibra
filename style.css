@@ -17,7 +17,7 @@ body {
 }
 
 /* ==============================
-   BACKGROUND
+   ANIMATED BACKGROUND
    ============================== */
 
 body::before {
@@ -33,6 +33,7 @@ body::before {
   background-repeat: no-repeat;
 
   opacity: 0.30;
+  filter: brightness(1.1);
 
   z-index: -2;
 
@@ -44,7 +45,7 @@ body::after {
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.38);
+  background: rgba(0, 0, 0, 0.30);
 
   z-index: -1;
   pointer-events: none;
@@ -314,7 +315,7 @@ footer {
 }
 
 /* ==============================
-   MOBILE
+   MOBILE / PHONE
    ============================== */
 
 @media (max-width: 700px) {
@@ -337,7 +338,6 @@ footer {
   .hero {
     min-height: 620px;
     padding: 70px 6%;
-    align-items: center;
   }
 
   .hero-content {
@@ -384,13 +384,16 @@ footer {
     gap: 10px;
   }
 
+  /* PHONE BACKGROUND */
   body::before {
-    opacity: 0.35;
+    opacity: 0.55;
+    filter: brightness(1.15);
+    background-size: cover;
     background-position: center;
     animation-duration: 30s;
   }
 
   body::after {
-    background: rgba(0, 0, 0, 0.28);
+    background: rgba(0, 0, 0, 0.08);
   }
 }
