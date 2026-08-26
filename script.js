@@ -1,6 +1,6 @@
-/* ==============================
+/* =========================================================
    DEMO CONTENT
-   ============================== */
+   ========================================================= */
 
 const demoNews = [
   {
@@ -55,46 +55,43 @@ const demoStore = [
 ];
 
 
-/* ==============================
-   CREATE CARDS
-   ============================== */
+/* =========================================================
+   CARDS
+   ========================================================= */
 
 function cards(items, type) {
 
-  return items.map(x => {
+  return items.map(x => `
 
-    return `
-      <article class="card">
+    <article class="card">
 
-        <span class="tag">
-          ${x.tag || type}
-        </span>
+      <span class="tag">
+        ${x.tag || type}
+      </span>
 
-        <h3>
-          ${x.title}
-        </h3>
+      <h3>
+        ${x.title}
+      </h3>
 
-        <p>
-          ${x.text || ""}
-        </p>
+      <p>
+        ${x.text || ""}
+      </p>
 
-        ${
-          x.price
-            ? `<div class="price">${x.price}</div>`
-            : ""
-        }
+      ${
+        x.price
+          ? `<div class="price">${x.price}</div>`
+          : ""
+      }
 
-      </article>
-    `;
+    </article>
 
-  }).join("");
-
+  `).join("");
 }
 
 
-/* ==============================
-   RENDER DEMO CONTENT
-   ============================== */
+/* =========================================================
+   RENDER
+   ========================================================= */
 
 function render() {
 
@@ -106,18 +103,20 @@ function render() {
 
   document.querySelector("#store-grid").innerHTML =
     cards(demoStore, "STORE");
-
 }
 
 render();
 
 
-/* ==============================
+/* =========================================================
    MOBILE MENU
-   ============================== */
+   ========================================================= */
 
-const menuBtn = document.querySelector("#menuBtn");
-const mobileMenu = document.querySelector("#mobileMenu");
+const menuBtn =
+  document.querySelector("#menuBtn");
+
+const mobileMenu =
+  document.querySelector("#mobileMenu");
 
 if (menuBtn && mobileMenu) {
 
@@ -126,34 +125,331 @@ if (menuBtn && mobileMenu) {
     mobileMenu.classList.toggle("active");
 
     if (mobileMenu.classList.contains("active")) {
-      menuBtn.innerHTML = "✕";
+
+      menuBtn.textContent = "✕";
+
     } else {
-      menuBtn.innerHTML = "☰";
+
+      menuBtn.textContent = "☰";
+
     }
 
   });
 
 
-  /* Close menu after clicking a link */
+  mobileMenu
+    .querySelectorAll("a")
+    .forEach(link => {
 
-  mobileMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
 
-    link.addEventListener("click", () => {
+        mobileMenu.classList.remove("active");
 
-      mobileMenu.classList.remove("active");
+        menuBtn.textContent = "☰";
 
-      menuBtn.innerHTML = "☰";
+      });
 
     });
-
-  });
 
 }
 
 
-/* ==============================
+/* =========================================================
+   PROFILE DRAWER
+   ========================================================= */
+
+const profileBtn =
+  document.querySelector("#profileBtn");
+
+const profileDrawer =
+  document.querySelector("#profileDrawer");
+
+const profileOverlay =
+  document.querySelector("#profileOverlay");
+
+const profileClose =
+  document.querySelector("#profileClose");
+
+
+function openProfile() {
+
+  profileDrawer.classList.add("active");
+
+  profileOverlay.classList.add("active");
+
+  profileDrawer.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.style.overflow = "hidden";
+}
+
+
+function closeProfile() {
+
+  profileDrawer.classList.remove("active");
+
+  profileOverlay.classList.remove("active");
+
+  profileDrawer.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.style.overflow = "";
+}
+
+
+if (profileBtn) {
+
+  profileBtn.addEventListener(
+    "click",
+    openProfile
+  );
+
+}
+
+
+if (profileClose) {
+
+  profileClose.addEventListener(
+    "click",
+    closeProfile
+  );
+
+}
+
+
+if (profileOverlay) {
+
+  profileOverlay.addEventListener(
+    "click",
+    closeProfile
+  );
+
+}
+
+
+/* ESC TO CLOSE */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "Escape") {
+
+      closeProfile();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CHANGE INFORMATION
+   ========================================================= */
+
+const changeInfo =
+  document.querySelector("#changeInfo");
+
+const editForm =
+  document.querySelector("#editForm");
+
+if (changeInfo && editForm) {
+
+  changeInfo.addEventListener(
+    "click",
+    () => {
+
+      editForm.classList.toggle("active");
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   PROFILE DATA
+   ========================================================= */
+
+const nameInput =
+  document.querySelector("#nameInput");
+
+const emailInput =
+  document.querySelector("#emailInput");
+
+const profileName =
+  document.querySelector("#profileName");
+
+const saveProfile =
+  document.querySelector("#saveProfile");
+
+
+/* Load saved name */
+
+const savedName =
+  localStorage.getItem("molClientName");
+
+const savedEmail =
+  localStorage.getItem("molClientEmail");
+
+
+if (savedName) {
+
+  profileName.textContent =
+    savedName;
+
+  nameInput.value =
+    savedName;
+}
+
+
+if (savedEmail) {
+
+  emailInput.value =
+    savedEmail;
+}
+
+
+/* Save information */
+
+if (saveProfile) {
+
+  saveProfile.addEventListener(
+    "click",
+    () => {
+
+      const newName =
+        nameInput.value.trim();
+
+      const newEmail =
+        emailInput.value.trim();
+
+
+      if (newName) {
+
+        localStorage.setItem(
+          "molClientName",
+          newName
+        );
+
+        profileName.textContent =
+          newName;
+
+      }
+
+
+      if (newEmail) {
+
+        localStorage.setItem(
+          "molClientEmail",
+          newEmail
+        );
+
+      }
+
+
+      editForm.classList.remove(
+        "active"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   PROFILE PHOTO
+   ========================================================= */
+
+const changePhoto =
+  document.querySelector("#changePhoto");
+
+const photoInput =
+  document.querySelector("#photoInput");
+
+const profileAvatar =
+  document.querySelector("#profileAvatar");
+
+
+if (changePhoto && photoInput) {
+
+  changePhoto.addEventListener(
+    "click",
+    () => {
+
+      photoInput.click();
+
+    }
+  );
+
+}
+
+
+if (photoInput) {
+
+  photoInput.addEventListener(
+    "change",
+    event => {
+
+      const file =
+        event.target.files[0];
+
+      if (!file) return;
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload = function(e) {
+
+        profileAvatar.innerHTML = `
+          <img
+            src="${e.target.result}"
+            alt="Profile picture">
+        `;
+
+        localStorage.setItem(
+          "molClientPhoto",
+          e.target.result
+        );
+
+      };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
+
+
+/* Load saved photo */
+
+const savedPhoto =
+  localStorage.getItem("molClientPhoto");
+
+
+if (savedPhoto) {
+
+  profileAvatar.innerHTML = `
+    <img
+      src="${savedPhoto}"
+      alt="Profile picture">
+  `;
+
+}
+
+
+/* =========================================================
    SUPABASE
-   ============================== */
+   ========================================================= */
 
 async function loadSupabase() {
 
@@ -171,6 +467,7 @@ async function loadSupabase() {
         "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
       );
 
+
     const supabase =
       createClient(
         window.SUPABASE_URL,
@@ -182,13 +479,21 @@ async function loadSupabase() {
       await supabase
         .from("content")
         .select("*")
-        .order("created_at", {
-          ascending: false
-        });
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
 
 
     if (error) {
-      console.log("Supabase error:", error);
+
+      console.log(
+        "Supabase error:",
+        error
+      );
+
       return;
     }
 
@@ -196,18 +501,26 @@ async function loadSupabase() {
     if (data?.length) {
 
       const news =
-        data.filter(x => x.type === "news");
+        data.filter(
+          x => x.type === "news"
+        );
 
       const legends =
-        data.filter(x => x.type === "legend");
+        data.filter(
+          x => x.type === "legend"
+        );
 
       const store =
-        data.filter(x => x.type === "product");
+        data.filter(
+          x => x.type === "product"
+        );
 
 
       if (news.length) {
 
-        document.querySelector("#news-grid").innerHTML =
+        document.querySelector(
+          "#news-grid"
+        ).innerHTML =
           cards(news, "NEWS");
 
       }
@@ -215,7 +528,9 @@ async function loadSupabase() {
 
       if (legends.length) {
 
-        document.querySelector("#legends-grid").innerHTML =
+        document.querySelector(
+          "#legends-grid"
+        ).innerHTML =
           cards(legends, "LEGEND");
 
       }
@@ -223,7 +538,9 @@ async function loadSupabase() {
 
       if (store.length) {
 
-        document.querySelector("#store-grid").innerHTML =
+        document.querySelector(
+          "#store-grid"
+        ).innerHTML =
           cards(store, "STORE");
 
       }
