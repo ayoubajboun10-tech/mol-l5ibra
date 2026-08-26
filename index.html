@@ -12,9 +12,9 @@
 
 <body>
 
-  <!-- ==============================
+  <!-- =========================
        HEADER
-       ============================== -->
+       ========================= -->
 
   <header class="topbar">
 
@@ -22,7 +22,6 @@
       MOL <span>L5IBRA</span>
     </a>
 
-    <!-- Desktop navigation -->
     <nav class="desktop-nav">
       <a href="#home">Home</a>
       <a href="#football">Football</a>
@@ -31,15 +30,22 @@
       <a href="#store">Store</a>
     </nav>
 
-    <!-- Client Profile -->
-    <a class="profile-btn" href="#profile">
-      👤
-    </a>
+    <!-- PROFILE BUTTON -->
 
-    <!-- Mobile menu -->
+    <button
+      class="profile-btn"
+      id="profileBtn"
+      type="button"
+      aria-label="Open profile">
+      👤
+    </button>
+
+    <!-- MOBILE MENU -->
+
     <button
       class="menu-btn"
       id="menuBtn"
+      type="button"
       aria-label="Open menu">
       ☰
     </button>
@@ -47,33 +53,168 @@
   </header>
 
 
-  <!-- ==============================
+  <!-- =========================
        MOBILE MENU
-       ============================== -->
+       ========================= -->
 
-  <div class="mobile-menu" id="mobileMenu">
+  <div
+    class="mobile-menu"
+    id="mobileMenu">
 
     <a href="#home">Home</a>
     <a href="#football">Football</a>
     <a href="#legends">Legends</a>
     <a href="#videos">Videos</a>
     <a href="#store">Store</a>
-    <a href="#profile">👤 My Profile</a>
 
   </div>
 
 
-  <!-- ==============================
+  <!-- =========================
+       PROFILE OVERLAY
+       ========================= -->
+
+  <div
+    class="profile-overlay"
+    id="profileOverlay">
+  </div>
+
+
+  <!-- =========================
+       PROFILE DRAWER
+       ========================= -->
+
+  <aside
+    class="profile-drawer"
+    id="profileDrawer"
+    aria-hidden="true">
+
+    <div class="profile-header">
+
+      <h2>
+        My Profile
+      </h2>
+
+      <button
+        class="profile-close"
+        id="profileClose"
+        type="button">
+        ✕
+      </button>
+
+    </div>
+
+
+    <div class="profile-body">
+
+      <!-- PROFILE IMAGE -->
+
+      <div class="profile-picture">
+
+        <div
+          class="profile-avatar"
+          id="profileAvatar">
+          👤
+        </div>
+
+        <button
+          class="change-photo"
+          id="changePhoto"
+          type="button">
+          Change photo
+        </button>
+
+        <input
+          type="file"
+          id="photoInput"
+          accept="image/*"
+          hidden>
+
+      </div>
+
+
+      <!-- INFORMATION -->
+
+      <div class="profile-details">
+
+        <p class="profile-label">
+          Name
+        </p>
+
+        <h3 id="profileName">
+          MOL L5IBRA Client
+        </h3>
+
+        <p class="profile-label">
+          Account
+        </p>
+
+        <p class="profile-status">
+          Client account
+        </p>
+
+      </div>
+
+
+      <!-- CHANGE INFORMATION -->
+
+      <button
+        class="change-info"
+        id="changeInfo"
+        type="button">
+        ⚙️ Change information
+      </button>
+
+
+      <!-- EDIT FORM -->
+
+      <div
+        class="edit-form"
+        id="editForm">
+
+        <label>
+          Your name
+        </label>
+
+        <input
+          type="text"
+          id="nameInput"
+          placeholder="Enter your name">
+
+        <label>
+          Email
+        </label>
+
+        <input
+          type="email"
+          id="emailInput"
+          placeholder="Enter your email">
+
+        <button
+          class="save-profile"
+          id="saveProfile"
+          type="button">
+          Save changes
+        </button>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+
+  <!-- =========================
        MAIN
-       ============================== -->
+       ========================= -->
 
   <main>
 
-    <!-- ==========================
-         HERO
-         ========================== -->
+    <!-- HERO -->
 
-    <section id="home" class="hero">
+    <section
+      id="home"
+      class="hero">
 
       <div class="hero-content">
 
@@ -91,7 +232,9 @@
           Football stories, legendary players and words that stay with you.
         </p>
 
-        <a class="cta" href="#football">
+        <a
+          class="cta"
+          href="#football">
           Explore the game →
         </a>
 
@@ -104,11 +247,11 @@
     </section>
 
 
-    <!-- ==========================
-         FOOTBALL
-         ========================== -->
+    <!-- FOOTBALL -->
 
-    <section id="football" class="section">
+    <section
+      id="football"
+      class="section">
 
       <div class="section-title">
 
@@ -130,11 +273,11 @@
     </section>
 
 
-    <!-- ==========================
-         LEGENDS
-         ========================== -->
+    <!-- LEGENDS -->
 
-    <section id="legends" class="section alt">
+    <section
+      id="legends"
+      class="section alt">
 
       <div class="section-title">
 
@@ -156,11 +299,11 @@
     </section>
 
 
-    <!-- ==========================
-         VIDEOS
-         ========================== -->
+    <!-- VIDEOS -->
 
-    <section id="videos" class="section">
+    <section
+      id="videos"
+      class="section">
 
       <div class="section-title">
 
@@ -197,11 +340,11 @@
     </section>
 
 
-    <!-- ==========================
-         STORE
-         ========================== -->
+    <!-- STORE -->
 
-    <section id="store" class="section alt">
+    <section
+      id="store"
+      class="section alt">
 
       <div class="section-title">
 
@@ -222,57 +365,10 @@
 
     </section>
 
-
-    <!-- ==========================
-         CLIENT PROFILE
-         ========================== -->
-
-    <section id="profile" class="section profile-section">
-
-      <div class="section-title">
-
-        <p class="eyebrow">
-          ACCOUNT
-        </p>
-
-        <h2>
-          My Profile
-        </h2>
-
-      </div>
-
-      <div class="profile-card">
-
-        <div class="profile-avatar">
-          👤
-        </div>
-
-        <div class="profile-info">
-
-          <h3>
-            Welcome to MOL L5IBRA
-          </h3>
-
-          <p>
-            Create your personal profile and manage your account.
-          </p>
-
-          <button class="profile-edit" type="button">
-            Edit Profile
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
   </main>
 
 
-  <!-- ==============================
-       FOOTER
-       ============================== -->
+  <!-- FOOTER -->
 
   <footer>
 
@@ -286,10 +382,6 @@
 
   </footer>
 
-
-  <!-- ==============================
-       SCRIPTS
-       ============================== -->
 
   <script src="config.js"></script>
   <script src="script.js"></script>
