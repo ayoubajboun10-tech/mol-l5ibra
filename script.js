@@ -1,5 +1,11 @@
 /* =====================================================
-   MOL L5IBRA - MAIN SCRIPT
+   MOL L5IBRA - script.js
+   Email OTP + Profile + Supabase Content
+===================================================== */
+
+
+/* =====================================================
+   DEMO CONTENT
 ===================================================== */
 
 const demoNews = [
@@ -50,44 +56,11 @@ const demoStore = [
 
 
 /* =====================================================
-   CARDS
-===================================================== */
-
-function cards(items, type) {
-
-  return items.map(x => `
-    <article class="card">
-
-      <span class="tag">
-        ${x.tag || type}
-      </span>
-
-      <h3>
-        ${escapeHTML(x.title || "")}
-      </h3>
-
-      <p>
-        ${escapeHTML(x.text || "")}
-      </p>
-
-      ${
-        x.price
-          ? `<div class="price">${escapeHTML(x.price)}</div>`
-          : ""
-      }
-
-    </article>
-  `).join("");
-}
-
-
-/* =====================================================
-   SECURITY - HTML ESCAPE
+   HTML SECURITY
 ===================================================== */
 
 function escapeHTML(value) {
-
-  return String(value)
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -97,10 +70,39 @@ function escapeHTML(value) {
 
 
 /* =====================================================
-   DEMO CONTENT
+   CARDS
 ===================================================== */
 
-function render() {
+function cards(items, type) {
+  return items.map(item => `
+    <article class="card">
+      <span class="tag">
+        ${escapeHTML(item.tag || type)}
+      </span>
+
+      <h3>
+        ${escapeHTML(item.title || "")}
+      </h3>
+
+      <p>
+        ${escapeHTML(item.text || "")}
+      </p>
+
+      ${
+        item.price
+          ? `<div class="price">${escapeHTML(item.price)}</div>`
+          : ""
+      }
+    </article>
+  `).join("");
+}
+
+
+/* =====================================================
+   DEMO RENDER
+===================================================== */
+
+function renderDemo() {
 
   const newsGrid = document.querySelector("#news-grid");
   const legendsGrid = document.querySelector("#legends-grid");
@@ -119,7 +121,7 @@ function render() {
   }
 }
 
-render();
+renderDemo();
 
 
 /* =====================================================
@@ -128,22 +130,26 @@ render();
 
 let supabaseClient = null;
 
+
 async function initSupabase() {
 
   if (
     !window.SUPABASE_URL ||
     !window.SUPABASE_ANON_KEY
   ) {
-    console.log("Supabase configuration missing.");
+    console.error("Supabase configuration is missing.");
     return null;
+  }
+
+  if (supabaseClient) {
+    return supabaseClient;
   }
 
   try {
 
-    const { createClient } =
-      await import(
-        "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
-      );
+    const { createClient } = await import(
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+    );
 
     supabaseClient = createClient(
       window.SUPABASE_URL,
@@ -155,7 +161,7 @@ async function initSupabase() {
   } catch (error) {
 
     console.error(
-      "Supabase initialization error:",
+      "Could not initialize Supabase:",
       error
     );
 
@@ -165,7 +171,7 @@ async function initSupabase() {
 
 
 /* =====================================================
-   LOAD WEBSITE CONTENT
+   LOAD CONTENT FROM SUPABASE
 ===================================================== */
 
 async function loadSupabaseContent() {
@@ -184,64 +190,101 @@ async function loadSupabaseContent() {
       });
 
     if (error) {
-
-      console.log(
-        "Content table error:",
-        error.message
+      console.error(
+        "Content loading error:",
+        error
       );
-
       return;
     }
 
-    if (!data || !data.length) return;
+    if (!data || data.length === 0) {
+      return;
+    }
 
     const news = data.filter(
-      x => x.type === "news"
+      item => item.type === "news"
     );
 
     const legends = data.filter(
-      x => x.type === "legend"
+      item => item.type === "legend"
     );
 
-    const store = data.filter(
-      x => x.type === "product"
+    const products = data.filter(
+      item => item.type === "product"
     );
 
 
-    if (news.length) {
+    const newsGrid =
+      document.querySelector("#news-grid");
 
-      document.querySelector(
-        "#news-grid"
-      ).innerHTML =
+    const legendsGrid =
+      document.querySelector("#legends-grid");
+
+    const storeGrid =
+      document.querySelector("#store-grid");
+
+
+    if (news.length && newsGrid) {
+      newsGrid.innerHTML =
         cards(news, "NEWS");
     }
 
-
-    if (legends.length) {
-
-      document.querySelector(
-        "#legends-grid"
-      ).innerHTML =
+    if (legends.length && legendsGrid) {
+      legendsGrid.innerHTML =
         cards(legends, "LEGEND");
     }
 
-
-    if (store.length) {
-
-      document.querySelector(
-        "#store-grid"
-      ).innerHTML =
-        cards(store, "STORE");
+    if (products.length && storeGrid) {
+      storeGrid.innerHTML =
+        cards(products, "STORE");
     }
 
   } catch (error) {
 
-    console.log(
+    console.error(
       "Supabase content error:",
       error
     );
   }
 }
+
+
+/* =====================================================
+   LOGIN ELEMENTS
+===================================================== */
+
+const loginOverlay =
+  document.querySelector("#loginOverlay");
+
+const loginStep1 =
+  document.querySelector("#loginStep1");
+
+const loginStep2 =
+  document.querySelector("#loginStep2");
+
+const loginName =
+  document.querySelector("#loginName");
+
+const loginEmail =
+  document.querySelector("#loginEmail");
+
+const loginCode =
+  document.querySelector("#loginCode");
+
+const sendCodeBtn =
+  document.querySelector("#sendCodeBtn");
+
+const verifyCodeBtn =
+  document.querySelector("#verifyCodeBtn");
+
+const backLoginBtn =
+  document.querySelector("#backLoginBtn");
+
+const loginMessage =
+  document.querySelector("#loginMessage");
+
+const verifyMessage =
+  document.querySelector("#verifyMessage");
 
 
 /* =====================================================
@@ -259,6 +302,481 @@ const profileOverlay =
 
 const closeProfile =
   document.querySelector("#closeProfile");
+
+const profileAvatar =
+  document.querySelector("#profileAvatar");
+
+const defaultAvatar =
+  document.querySelector("#defaultAvatar");
+
+const profileName =
+  document.querySelector("#profileName");
+
+const profileEmail =
+  document.querySelector("#profileEmail");
+
+const infoName =
+  document.querySelector("#infoName");
+
+const infoEmail =
+  document.querySelector("#infoEmail");
+
+const editProfileBtn =
+  document.querySelector("#editProfileBtn");
+
+const editProfileBox =
+  document.querySelector("#editProfileBox");
+
+const newName =
+  document.querySelector("#newName");
+
+const avatarInput =
+  document.querySelector("#avatarInput");
+
+const saveProfileBtn =
+  document.querySelector("#saveProfileBtn");
+
+const profileMessage =
+  document.querySelector("#profileMessage");
+
+const logoutBtn =
+  document.querySelector("#logoutBtn");
+
+
+/* =====================================================
+   LOGIN VARIABLES
+===================================================== */
+
+let pendingEmail = "";
+let pendingName = "";
+
+
+/* =====================================================
+   LOGIN MESSAGE
+===================================================== */
+
+function showLoginMessage(message) {
+
+  if (loginMessage) {
+    loginMessage.textContent = message || "";
+  }
+}
+
+
+function showVerifyMessage(message) {
+
+  if (verifyMessage) {
+    verifyMessage.textContent = message || "";
+  }
+}
+
+
+function showProfileMessage(message) {
+
+  if (profileMessage) {
+    profileMessage.textContent = message || "";
+  }
+}
+
+
+/* =====================================================
+   LOGIN SHOW / HIDE
+===================================================== */
+
+function showLogin() {
+
+  if (!loginOverlay) return;
+
+  loginOverlay.classList.remove("hidden");
+
+  document.body.style.overflow = "hidden";
+}
+
+
+function hideLogin() {
+
+  if (!loginOverlay) return;
+
+  loginOverlay.classList.add("hidden");
+
+  document.body.style.overflow = "";
+}
+
+
+/* =====================================================
+   SEND OTP
+===================================================== */
+
+async function sendLoginCode() {
+
+  const supabase =
+    await initSupabase();
+
+  if (!supabase) {
+
+    showLoginMessage(
+      "Supabase is not connected."
+    );
+
+    return;
+  }
+
+
+  const name =
+    loginName?.value.trim() || "";
+
+  const email =
+    loginEmail?.value.trim().toLowerCase() || "";
+
+
+  if (!name) {
+
+    showLoginMessage(
+      "Enter your name first."
+    );
+
+    loginName?.focus();
+
+    return;
+  }
+
+
+  if (!email) {
+
+    showLoginMessage(
+      "Enter your Gmail address."
+    );
+
+    loginEmail?.focus();
+
+    return;
+  }
+
+
+  if (!email.endsWith("@gmail.com")) {
+
+    showLoginMessage(
+      "Please enter a Gmail address."
+    );
+
+    loginEmail?.focus();
+
+    return;
+  }
+
+
+  if (sendCodeBtn) {
+
+    sendCodeBtn.disabled = true;
+    sendCodeBtn.textContent = "Sending...";
+  }
+
+  showLoginMessage("");
+
+
+  try {
+
+    /*
+      IMPORTANT:
+      This sends an email OTP.
+      The user enters the 6-digit code from Gmail.
+    */
+
+    const { error } =
+      await supabase.auth.signInWithOtp({
+
+        email: email,
+
+        options: {
+          shouldCreateUser: true
+        }
+
+      });
+
+
+    if (error) {
+
+      console.error(
+        "OTP send error:",
+        error
+      );
+
+      showLoginMessage(
+        error.message
+      );
+
+      return;
+    }
+
+
+    pendingEmail = email;
+    pendingName = name;
+
+
+    if (loginStep1) {
+      loginStep1.classList.add("hidden");
+    }
+
+    if (loginStep2) {
+      loginStep2.classList.remove("hidden");
+    }
+
+
+    if (loginCode) {
+
+      loginCode.value = "";
+
+      loginCode.focus();
+    }
+
+
+    showVerifyMessage(
+      "We sent a 6-digit code to your Gmail."
+    );
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    showLoginMessage(
+      "Could not send the code."
+    );
+
+  } finally {
+
+    if (sendCodeBtn) {
+
+      sendCodeBtn.disabled = false;
+      sendCodeBtn.textContent = "Send code";
+    }
+  }
+}
+
+
+/* =====================================================
+   VERIFY OTP
+===================================================== */
+
+async function verifyLoginCode() {
+
+  const supabase =
+    await initSupabase();
+
+  if (!supabase) {
+
+    showVerifyMessage(
+      "Supabase is not connected."
+    );
+
+    return;
+  }
+
+
+  const code =
+    loginCode?.value.trim() || "";
+
+
+  if (!pendingEmail) {
+
+    showVerifyMessage(
+      "Please request a new code first."
+    );
+
+    return;
+  }
+
+
+  if (!/^\d{6}$/.test(code)) {
+
+    showVerifyMessage(
+      "Enter the 6-digit code."
+    );
+
+    loginCode?.focus();
+
+    return;
+  }
+
+
+  if (verifyCodeBtn) {
+
+    verifyCodeBtn.disabled = true;
+    verifyCodeBtn.textContent = "Checking...";
+  }
+
+
+  showVerifyMessage("");
+
+
+  try {
+
+    const { data, error } =
+      await supabase.auth.verifyOtp({
+
+        email: pendingEmail,
+
+        token: code,
+
+        type: "email"
+
+      });
+
+
+    if (error) {
+
+      console.error(
+        "OTP verification error:",
+        error
+      );
+
+      showVerifyMessage(
+        "The code is incorrect or expired."
+      );
+
+      return;
+    }
+
+
+    if (!data?.user) {
+
+      showVerifyMessage(
+        "Login failed. Please try again."
+      );
+
+      return;
+    }
+
+
+    /*
+      Create profile after successful login.
+    */
+
+    await createOrUpdateProfile(
+      data.user,
+      pendingName
+    );
+
+
+    hideLogin();
+
+    await loadUserProfile();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    showVerifyMessage(
+      "Something went wrong."
+    );
+
+  } finally {
+
+    if (verifyCodeBtn) {
+
+      verifyCodeBtn.disabled = false;
+      verifyCodeBtn.textContent =
+        "Verify & Enter";
+    }
+  }
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+if (backLoginBtn) {
+
+  backLoginBtn.addEventListener(
+    "click",
+    () => {
+
+      if (loginStep2) {
+        loginStep2.classList.add("hidden");
+      }
+
+      if (loginStep1) {
+        loginStep1.classList.remove("hidden");
+      }
+
+      showVerifyMessage("");
+
+      if (loginCode) {
+        loginCode.value = "";
+      }
+    }
+  );
+}
+
+
+/* =====================================================
+   LOGIN BUTTON EVENTS
+===================================================== */
+
+if (sendCodeBtn) {
+
+  sendCodeBtn.addEventListener(
+    "click",
+    sendLoginCode
+  );
+}
+
+
+if (verifyCodeBtn) {
+
+  verifyCodeBtn.addEventListener(
+    "click",
+    verifyLoginCode
+  );
+}
+
+
+if (loginEmail) {
+
+  loginEmail.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Enter") {
+        sendLoginCode();
+      }
+
+    }
+  );
+}
+
+
+if (loginCode) {
+
+  loginCode.addEventListener(
+    "input",
+    () => {
+
+      /*
+        Only allow numbers.
+      */
+
+      loginCode.value =
+        loginCode.value
+          .replace(/\D/g, "")
+          .slice(0, 6);
+    }
+  );
+
+
+  loginCode.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Enter") {
+        verifyLoginCode();
+      }
+
+    }
+  );
+}
 
 
 /* =====================================================
@@ -321,465 +839,6 @@ if (profileOverlay) {
 
 
 /* =====================================================
-   LOGIN ELEMENTS
-===================================================== */
-
-const loginOverlay =
-  document.querySelector("#loginOverlay");
-
-const loginStep1 =
-  document.querySelector("#loginStep1");
-
-const loginStep2 =
-  document.querySelector("#loginStep2");
-
-const loginName =
-  document.querySelector("#loginName");
-
-const loginEmail =
-  document.querySelector("#loginEmail");
-
-const loginCode =
-  document.querySelector("#loginCode");
-
-const sendCodeBtn =
-  document.querySelector("#sendCodeBtn");
-
-const verifyCodeBtn =
-  document.querySelector("#verifyCodeBtn");
-
-const backLoginBtn =
-  document.querySelector("#backLoginBtn");
-
-const loginMessage =
-  document.querySelector("#loginMessage");
-
-const verifyMessage =
-  document.querySelector("#verifyMessage");
-
-
-/* =====================================================
-   PROFILE ELEMENTS
-===================================================== */
-
-const profileAvatar =
-  document.querySelector("#profileAvatar");
-
-const defaultAvatar =
-  document.querySelector("#defaultAvatar");
-
-const profileName =
-  document.querySelector("#profileName");
-
-const profileEmail =
-  document.querySelector("#profileEmail");
-
-const infoName =
-  document.querySelector("#infoName");
-
-const infoEmail =
-  document.querySelector("#infoEmail");
-
-const editProfileBtn =
-  document.querySelector("#editProfileBtn");
-
-const editProfileBox =
-  document.querySelector("#editProfileBox");
-
-const newName =
-  document.querySelector("#newName");
-
-const avatarInput =
-  document.querySelector("#avatarInput");
-
-const saveProfileBtn =
-  document.querySelector("#saveProfileBtn");
-
-const profileMessage =
-  document.querySelector("#profileMessage");
-
-const logoutBtn =
-  document.querySelector("#logoutBtn");
-
-
-/* =====================================================
-   LOGIN STATE
-===================================================== */
-
-let pendingEmail = "";
-let pendingName = "";
-
-
-/* =====================================================
-   MESSAGE HELPERS
-===================================================== */
-
-function showLoginMessage(message) {
-
-  if (loginMessage) {
-    loginMessage.textContent = message;
-  }
-}
-
-
-function showVerifyMessage(message) {
-
-  if (verifyMessage) {
-    verifyMessage.textContent = message;
-  }
-}
-
-
-function showProfileMessage(message) {
-
-  if (profileMessage) {
-    profileMessage.textContent = message;
-  }
-}
-
-
-/* =====================================================
-   SHOW / HIDE LOGIN
-===================================================== */
-
-function showLogin() {
-
-  if (!loginOverlay) return;
-
-  loginOverlay.classList.remove("hidden");
-
-  document.body.style.overflow = "hidden";
-}
-
-
-function hideLogin() {
-
-  if (!loginOverlay) return;
-
-  loginOverlay.classList.add("hidden");
-
-  document.body.style.overflow = "";
-}
-
-
-/* =====================================================
-   SEND EMAIL CODE
-===================================================== */
-
-async function sendLoginCode() {
-
-  if (!supabaseClient) {
-
-    await initSupabase();
-  }
-
-  if (!supabaseClient) {
-
-    showLoginMessage(
-      "Supabase is not connected."
-    );
-
-    return;
-  }
-
-
-  const name =
-    loginName.value.trim();
-
-  const email =
-    loginEmail.value.trim().toLowerCase();
-
-
-  if (!name) {
-
-    showLoginMessage(
-      "Please enter your name."
-    );
-
-    loginName.focus();
-
-    return;
-  }
-
-
-  if (!email) {
-
-    showLoginMessage(
-      "Please enter your Gmail."
-    );
-
-    loginEmail.focus();
-
-    return;
-  }
-
-
-  if (!email.endsWith("@gmail.com")) {
-
-    showLoginMessage(
-      "Please use a Gmail address."
-    );
-
-    loginEmail.focus();
-
-    return;
-  }
-
-
-  sendCodeBtn.disabled = true;
-
-  sendCodeBtn.textContent =
-    "Sending...";
-
-  showLoginMessage("");
-
-
-  try {
-
-    const { error } =
-      await supabaseClient.auth.signInWithOtp({
-        email: email,
-        options: {
-          shouldCreateUser: true
-        }
-      });
-
-
-    if (error) {
-
-      console.error(error);
-
-      showLoginMessage(
-        error.message
-      );
-
-      sendCodeBtn.disabled = false;
-
-      sendCodeBtn.textContent =
-        "Send code";
-
-      return;
-    }
-
-
-    pendingEmail = email;
-    pendingName = name;
-
-
-    loginStep1.classList.add("hidden");
-
-    loginStep2.classList.remove("hidden");
-
-
-    loginCode.value = "";
-
-    loginCode.focus();
-
-
-    showVerifyMessage(
-      "Check your Gmail for the verification code."
-    );
-
-  } catch (error) {
-
-    console.error(error);
-
-    showLoginMessage(
-      "Something went wrong. Please try again."
-    );
-
-  } finally {
-
-    sendCodeBtn.disabled = false;
-
-    sendCodeBtn.textContent =
-      "Send code";
-  }
-}
-
-
-/* =====================================================
-   VERIFY CODE
-===================================================== */
-
-async function verifyLoginCode() {
-
-  if (!supabaseClient) {
-
-    await initSupabase();
-  }
-
-  if (!supabaseClient) {
-
-    showVerifyMessage(
-      "Supabase is not connected."
-    );
-
-    return;
-  }
-
-
-  const code =
-    loginCode.value.trim();
-
-
-  if (!code) {
-
-    showVerifyMessage(
-      "Enter the code from your Gmail."
-    );
-
-    loginCode.focus();
-
-    return;
-  }
-
-
-  verifyCodeBtn.disabled = true;
-
-  verifyCodeBtn.textContent =
-    "Checking...";
-
-
-  try {
-
-    const { data, error } =
-      await supabaseClient.auth.verifyOtp({
-        email: pendingEmail,
-        token: code,
-        type: "email"
-      });
-
-
-    if (error) {
-
-      console.error(error);
-
-      showVerifyMessage(
-        "Invalid or expired code."
-      );
-
-      return;
-    }
-
-
-    if (!data || !data.user) {
-
-      showVerifyMessage(
-        "Login could not be completed."
-      );
-
-      return;
-    }
-
-
-    /* SAVE NAME */
-
-    await createOrUpdateProfile(
-      data.user,
-      pendingName
-    );
-
-
-    hideLogin();
-
-    await loadUserProfile();
-
-  } catch (error) {
-
-    console.error(error);
-
-    showVerifyMessage(
-      "Something went wrong. Please try again."
-    );
-
-  } finally {
-
-    verifyCodeBtn.disabled = false;
-
-    verifyCodeBtn.textContent =
-      "Verify & Enter";
-  }
-}
-
-
-/* =====================================================
-   BACK TO STEP 1
-===================================================== */
-
-if (backLoginBtn) {
-
-  backLoginBtn.addEventListener(
-    "click",
-    () => {
-
-      loginStep2.classList.add("hidden");
-
-      loginStep1.classList.remove("hidden");
-
-      showVerifyMessage("");
-
-      loginCode.value = "";
-
-      loginEmail.focus();
-    }
-  );
-}
-
-
-/* =====================================================
-   BUTTON EVENTS
-===================================================== */
-
-if (sendCodeBtn) {
-
-  sendCodeBtn.addEventListener(
-    "click",
-    sendLoginCode
-  );
-}
-
-
-if (verifyCodeBtn) {
-
-  verifyCodeBtn.addEventListener(
-    "click",
-    verifyLoginCode
-  );
-}
-
-
-if (loginEmail) {
-
-  loginEmail.addEventListener(
-    "keydown",
-    event => {
-
-      if (event.key === "Enter") {
-        sendLoginCode();
-      }
-
-    }
-  );
-}
-
-
-if (loginCode) {
-
-  loginCode.addEventListener(
-    "keydown",
-    event => {
-
-      if (event.key === "Enter") {
-        verifyLoginCode();
-      }
-
-    }
-  );
-}
-
-
-/* =====================================================
    CREATE / UPDATE PROFILE
 ===================================================== */
 
@@ -788,13 +847,15 @@ async function createOrUpdateProfile(
   name
 ) {
 
-  if (!supabaseClient || !user) return;
+  if (!supabaseClient || !user) {
+    return;
+  }
 
 
   const cleanName =
     name ||
     user.user_metadata?.full_name ||
-    "";
+    "User";
 
 
   const { error } =
@@ -814,7 +875,7 @@ async function createOrUpdateProfile(
   if (error) {
 
     console.error(
-      "Profile save error:",
+      "Profile creation error:",
       error
     );
   }
@@ -827,7 +888,10 @@ async function createOrUpdateProfile(
 
 async function loadUserProfile() {
 
-  if (!supabaseClient) return;
+  const supabase =
+    await initSupabase();
+
+  if (!supabase) return;
 
 
   const {
@@ -835,7 +899,7 @@ async function loadUserProfile() {
       user
     }
   } =
-    await supabaseClient.auth.getUser();
+    await supabase.auth.getUser();
 
 
   if (!user) {
@@ -850,7 +914,7 @@ async function loadUserProfile() {
     data: profile,
     error
   } =
-    await supabaseClient
+    await supabase
       .from("profiles")
       .select("*")
       .eq("id", user.id)
@@ -873,14 +937,17 @@ async function loadUserProfile() {
 
 
   const email =
-    user.email ||
-    "";
+    user.email || "";
+
+
+  const avatar =
+    profile?.avatar_url || "";
 
 
   updateProfileUI(
     name,
     email,
-    profile?.avatar_url || ""
+    avatar
   );
 }
 
@@ -911,33 +978,43 @@ function updateProfileUI(
     infoEmail.textContent = email;
   }
 
-
   if (newName) {
     newName.value = name;
   }
 
 
-  if (avatar) {
+  if (
+    avatar &&
+    profileAvatar
+  ) {
 
     profileAvatar.src = avatar;
 
     profileAvatar.style.display =
       "block";
 
-    defaultAvatar.style.display =
-      "none";
+    if (defaultAvatar) {
+      defaultAvatar.style.display =
+        "none";
+    }
 
   } else {
 
-    profileAvatar.removeAttribute(
-      "src"
-    );
+    if (profileAvatar) {
 
-    profileAvatar.style.display =
-      "none";
+      profileAvatar.removeAttribute(
+        "src"
+      );
 
-    defaultAvatar.style.display =
-      "grid";
+      profileAvatar.style.display =
+        "none";
+    }
+
+    if (defaultAvatar) {
+
+      defaultAvatar.style.display =
+        "grid";
+    }
   }
 }
 
@@ -964,7 +1041,7 @@ if (editProfileBtn) {
         )
       ) {
 
-        newName.focus();
+        newName?.focus();
       }
     }
   );
@@ -977,7 +1054,10 @@ if (editProfileBtn) {
 
 async function saveProfile() {
 
-  if (!supabaseClient) return;
+  const supabase =
+    await initSupabase();
+
+  if (!supabase) return;
 
 
   const {
@@ -985,13 +1065,13 @@ async function saveProfile() {
       user
     }
   } =
-    await supabaseClient.auth.getUser();
+    await supabase.auth.getUser();
 
 
   if (!user) {
 
     showProfileMessage(
-      "You are not logged in."
+      "Please login first."
     );
 
     return;
@@ -999,23 +1079,25 @@ async function saveProfile() {
 
 
   const name =
-    newName.value.trim();
+    newName?.value.trim() || "";
 
 
   if (!name) {
 
     showProfileMessage(
-      "Please enter your name."
+      "Enter your name."
     );
 
     return;
   }
 
 
-  saveProfileBtn.disabled = true;
+  if (saveProfileBtn) {
 
-  saveProfileBtn.textContent =
-    "Saving...";
+    saveProfileBtn.disabled = true;
+    saveProfileBtn.textContent =
+      "Saving...";
+  }
 
 
   try {
@@ -1024,12 +1106,12 @@ async function saveProfile() {
 
 
     /* =============================================
-       PROFILE PICTURE
+       AVATAR
     ============================================= */
 
     if (
-      avatarInput.files &&
-      avatarInput.files.length
+      avatarInput?.files &&
+      avatarInput.files.length > 0
     ) {
 
       const file =
@@ -1037,13 +1119,11 @@ async function saveProfile() {
 
 
       if (
-        !file.type.startsWith(
-          "image/"
-        )
+        !file.type.startsWith("image/")
       ) {
 
         showProfileMessage(
-          "Please choose an image."
+          "Please select an image."
         );
 
         return;
@@ -1063,15 +1143,7 @@ async function saveProfile() {
       }
 
 
-      /*
-       NOTE:
-       Avatar upload needs a Supabase Storage bucket
-       named "avatars".
-
-       We try to upload the image.
-      */
-
-      const fileExt =
+      const extension =
         file.name
           .split(".")
           .pop()
@@ -1079,13 +1151,13 @@ async function saveProfile() {
 
 
       const filePath =
-        `${user.id}/avatar.${fileExt}`;
+        `${user.id}/avatar.${extension}`;
 
 
       const {
         error: uploadError
       } =
-        await supabaseClient
+        await supabase
           .storage
           .from("avatars")
           .upload(
@@ -1101,11 +1173,12 @@ async function saveProfile() {
       if (uploadError) {
 
         console.error(
+          "Avatar upload error:",
           uploadError
         );
 
         showProfileMessage(
-          "Image upload failed. Create the avatars bucket first."
+          "Could not upload the image."
         );
 
         return;
@@ -1115,7 +1188,7 @@ async function saveProfile() {
       const {
         data: publicData
       } =
-        supabaseClient
+        supabase
           .storage
           .from("avatars")
           .getPublicUrl(
@@ -1129,12 +1202,13 @@ async function saveProfile() {
 
 
     /* =============================================
-       SAVE DATABASE
+       UPDATE DATABASE
     ============================================= */
 
     const updateData = {
       full_name: name,
-      updated_at: new Date().toISOString()
+      updated_at:
+        new Date().toISOString()
     };
 
 
@@ -1148,7 +1222,7 @@ async function saveProfile() {
     const {
       error
     } =
-      await supabaseClient
+      await supabase
         .from("profiles")
         .update(updateData)
         .eq("id", user.id);
@@ -1156,23 +1230,20 @@ async function saveProfile() {
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        "Profile update error:",
+        error
+      );
 
       showProfileMessage(
-        "Could not save profile."
+        "Could not save your profile."
       );
 
       return;
     }
 
 
-    updateProfileUI(
-      name,
-      user.email || "",
-      avatarUrl ||
-      profileAvatar.src ||
-      ""
-    );
+    await loadUserProfile();
 
 
     showProfileMessage(
@@ -1180,7 +1251,9 @@ async function saveProfile() {
     );
 
 
-    avatarInput.value = "";
+    if (avatarInput) {
+      avatarInput.value = "";
+    }
 
 
   } catch (error) {
@@ -1193,10 +1266,12 @@ async function saveProfile() {
 
   } finally {
 
-    saveProfileBtn.disabled = false;
+    if (saveProfileBtn) {
 
-    saveProfileBtn.textContent =
-      "Save changes";
+      saveProfileBtn.disabled = false;
+      saveProfileBtn.textContent =
+        "Save changes";
+    }
   }
 }
 
@@ -1220,11 +1295,13 @@ if (logoutBtn) {
     "click",
     async () => {
 
-      if (!supabaseClient) return;
+      const supabase =
+        await initSupabase();
+
+      if (!supabase) return;
 
 
       logoutBtn.disabled = true;
-
       logoutBtn.textContent =
         "Logging out...";
 
@@ -1232,7 +1309,7 @@ if (logoutBtn) {
       const {
         error
       } =
-        await supabaseClient.auth.signOut();
+        await supabase.auth.signOut();
 
 
       if (error) {
@@ -1240,7 +1317,6 @@ if (logoutBtn) {
         console.error(error);
 
         logoutBtn.disabled = false;
-
         logoutBtn.textContent =
           "Logout";
 
@@ -1250,7 +1326,6 @@ if (logoutBtn) {
 
       closeProfileSidebar();
 
-
       location.reload();
     }
   );
@@ -1258,7 +1333,7 @@ if (logoutBtn) {
 
 
 /* =====================================================
-   CHECK LOGIN WHEN PAGE OPENS
+   CHECK LOGIN
 ===================================================== */
 
 async function checkLogin() {
@@ -1266,11 +1341,7 @@ async function checkLogin() {
   const supabase =
     await initSupabase();
 
-
-  if (!supabase) {
-
-    return;
-  }
+  if (!supabase) return;
 
 
   const {
@@ -1293,15 +1364,8 @@ async function checkLogin() {
   }
 
 
-  /*
-    Keep UI synchronized if auth changes.
-  */
-
   supabase.auth.onAuthStateChange(
-    async (
-      event,
-      session
-    ) => {
+    async (event, session) => {
 
       if (
         event === "SIGNED_IN" &&
