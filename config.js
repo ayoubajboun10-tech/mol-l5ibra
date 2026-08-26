@@ -1,5 +1,2 @@
-// Supabase configuration.
-// IMPORTANT: only use your Supabase project URL and publishable/anon key here.
-// NEVER put a Supabase service_role/secret key in this file.
-window.SUPABASE_URL = "";
-window.SUPABASE_ANON_KEY = "";
+window.SUPABASE_URL = "https://dgepzjyplnovlissexmy.supabase.co";
+window.SUPABASE_ANON_KEY = "sb_publishable_IITQqIX_7vM1cZhKIZiQDQ_c9rRZzbQ";
