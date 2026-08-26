@@ -12,10 +12,7 @@
 
 <body>
 
-  <!-- =========================
-       HEADER
-       ========================= -->
-
+  <!-- HEADER -->
   <header class="topbar">
 
     <a class="logo" href="#home">
@@ -30,8 +27,6 @@
       <a href="#store">Store</a>
     </nav>
 
-    <!-- PROFILE BUTTON -->
-
     <button
       class="profile-btn"
       id="profileBtn"
@@ -40,50 +35,34 @@
       👤
     </button>
 
-    <!-- MOBILE MENU -->
-
     <button
       class="menu-btn"
       id="menuBtn"
-      type="button"
-      aria-label="Open menu">
+      type="button">
       ☰
     </button>
 
   </header>
 
 
-  <!-- =========================
-       MOBILE MENU
-       ========================= -->
-
-  <div
-    class="mobile-menu"
-    id="mobileMenu">
-
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
     <a href="#home">Home</a>
     <a href="#football">Football</a>
     <a href="#legends">Legends</a>
     <a href="#videos">Videos</a>
     <a href="#store">Store</a>
-
   </div>
 
 
-  <!-- =========================
-       PROFILE OVERLAY
-       ========================= -->
-
+  <!-- PROFILE OVERLAY -->
   <div
     class="profile-overlay"
     id="profileOverlay">
   </div>
 
 
-  <!-- =========================
-       PROFILE DRAWER
-       ========================= -->
-
+  <!-- PROFILE DRAWER -->
   <aside
     class="profile-drawer"
     id="profileDrawer"
@@ -91,9 +70,7 @@
 
     <div class="profile-header">
 
-      <h2>
-        My Profile
-      </h2>
+      <h2>My Profile</h2>
 
       <button
         class="profile-close"
@@ -107,94 +84,229 @@
 
     <div class="profile-body">
 
-      <!-- PROFILE IMAGE -->
+      <!-- =========================
+           NOT LOGGED IN
+           ========================= -->
 
-      <div class="profile-picture">
+      <div
+        id="authView"
+        class="auth-view">
 
-        <div
-          class="profile-avatar"
-          id="profileAvatar">
+        <div class="auth-icon">
           👤
         </div>
 
-        <button
-          class="change-photo"
-          id="changePhoto"
-          type="button">
-          Change photo
-        </button>
-
-        <input
-          type="file"
-          id="photoInput"
-          accept="image/*"
-          hidden>
-
-      </div>
-
-
-      <!-- INFORMATION -->
-
-      <div class="profile-details">
-
-        <p class="profile-label">
-          Name
-        </p>
-
-        <h3 id="profileName">
-          MOL L5IBRA Client
+        <h3>
+          Welcome to MOL L5IBRA
         </h3>
 
-        <p class="profile-label">
-          Account
+        <p>
+          Login or create an account to manage your profile.
         </p>
 
-        <p class="profile-status">
-          Client account
+
+        <!-- LOGIN -->
+
+        <div
+          id="loginForm"
+          class="auth-form">
+
+          <h3>Login</h3>
+
+          <label>Email</label>
+
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="Your email"
+            autocomplete="email">
+
+
+          <label>Password</label>
+
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Your password"
+            autocomplete="current-password">
+
+
+          <button
+            class="primary-btn"
+            id="loginBtn"
+            type="button">
+            Login
+          </button>
+
+
+          <p
+            class="auth-switch"
+            id="showSignup">
+            Don't have an account?
+            <span>Create one</span>
+          </p>
+
+        </div>
+
+
+        <!-- SIGN UP -->
+
+        <div
+          id="signupForm"
+          class="auth-form hidden">
+
+          <h3>Create account</h3>
+
+          <label>Name</label>
+
+          <input
+            type="text"
+            id="signupName"
+            placeholder="Your name"
+            autocomplete="name">
+
+
+          <label>Email</label>
+
+          <input
+            type="email"
+            id="signupEmail"
+            placeholder="Your email"
+            autocomplete="email">
+
+
+          <label>Password</label>
+
+          <input
+            type="password"
+            id="signupPassword"
+            placeholder="Create a password"
+            autocomplete="new-password">
+
+
+          <button
+            class="primary-btn"
+            id="signupBtn"
+            type="button">
+            Create account
+          </button>
+
+
+          <p
+            class="auth-switch"
+            id="showLogin">
+            Already have an account?
+            <span>Login</span>
+          </p>
+
+        </div>
+
+
+        <p
+          id="authMessage"
+          class="auth-message">
         </p>
 
       </div>
 
 
-      <!-- CHANGE INFORMATION -->
-
-      <button
-        class="change-info"
-        id="changeInfo"
-        type="button">
-        ⚙️ Change information
-      </button>
-
-
-      <!-- EDIT FORM -->
+      <!-- =========================
+           LOGGED IN PROFILE
+           ========================= -->
 
       <div
-        class="edit-form"
-        id="editForm">
+        id="accountView"
+        class="account-view hidden">
 
-        <label>
-          Your name
-        </label>
+        <div class="profile-picture">
 
-        <input
-          type="text"
-          id="nameInput"
-          placeholder="Enter your name">
+          <div
+            class="profile-avatar"
+            id="profileAvatar">
+            👤
+          </div>
 
-        <label>
-          Email
-        </label>
+          <button
+            class="change-photo"
+            id="changePhoto"
+            type="button">
+            Change photo
+          </button>
 
-        <input
-          type="email"
-          id="emailInput"
-          placeholder="Enter your email">
+          <input
+            type="file"
+            id="photoInput"
+            accept="image/*"
+            hidden>
+
+        </div>
+
+
+        <div class="profile-details">
+
+          <p class="profile-label">
+            Name
+          </p>
+
+          <h3 id="profileName">
+            MOL L5IBRA Client
+          </h3>
+
+
+          <p class="profile-label">
+            Email
+          </p>
+
+          <p
+            class="profile-email"
+            id="profileEmail">
+            —
+          </p>
+
+        </div>
+
 
         <button
-          class="save-profile"
-          id="saveProfile"
+          class="change-info"
+          id="changeInfo"
           type="button">
-          Save changes
+          ⚙️ Change information
+        </button>
+
+
+        <!-- EDIT PROFILE -->
+
+        <div
+          class="edit-form"
+          id="editForm">
+
+          <label>
+            Your name
+          </label>
+
+          <input
+            type="text"
+            id="nameInput"
+            placeholder="Enter your name">
+
+
+          <button
+            class="save-profile"
+            id="saveProfile"
+            type="button">
+            Save changes
+          </button>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <button
+          class="logout-btn"
+          id="logoutBtn"
+          type="button">
+          🚪 Logout
         </button>
 
       </div>
@@ -324,7 +436,6 @@
         </div>
 
         <div>
-
           <h3>
             Football stories coming soon
           </h3>
@@ -332,7 +443,6 @@
           <p>
             Add your videos from the Admin Panel.
           </p>
-
         </div>
 
       </div>
