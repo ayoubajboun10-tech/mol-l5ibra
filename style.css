@@ -17,27 +17,27 @@ body {
 }
 
 /* ==============================
-   ANIMATED BACKGROUND
+   SMOOTH ANIMATED BACKGROUND
    ============================== */
 
 body::before {
   content: "";
   position: fixed;
-  inset: -5%;
-  width: 110%;
-  height: 110%;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
 
   background-image: url("./background.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  opacity: 0.30;
-  filter: brightness(1.1);
+  opacity: 0.38;
+  filter: brightness(0.82);
 
   z-index: -2;
 
-  animation: molBackground 25s ease-in-out infinite alternate;
+  animation: smoothBackground 35s ease-in-out infinite alternate;
 }
 
 body::after {
@@ -45,19 +45,31 @@ body::after {
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.30);
+  background: rgba(0, 0, 0, 0.32);
 
   z-index: -1;
   pointer-events: none;
 }
 
-@keyframes molBackground {
+@keyframes smoothBackground {
   0% {
-    transform: scale(1);
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: scale(1.05) translate3d(-0.5%, -0.3%, 0);
+  }
+
+  50% {
+    transform: scale(1.08) translate3d(-0.8%, 0.2%, 0);
+  }
+
+  75% {
+    transform: scale(1.10) translate3d(0.3%, 0.6%, 0);
   }
 
   100% {
-    transform: scale(1.10) translate(1%, 1%);
+    transform: scale(1.12) translate3d(0.8%, 0, 0);
   }
 }
 
@@ -106,6 +118,7 @@ h1 span {
   color: #aeb7c3;
   text-decoration: none;
   font-size: 14px;
+  transition: 0.2s;
 }
 
 .topbar nav a:hover {
@@ -120,6 +133,13 @@ h1 span {
   font-weight: 800;
   padding: 10px 15px;
   border-radius: 8px;
+  transition: 0.2s;
+}
+
+.admin-btn:hover,
+.cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
 }
 
 /* ==============================
@@ -151,6 +171,8 @@ h1 span {
 
   right: -160px;
   top: 80px;
+
+  opacity: 0.7;
 }
 
 .hero-content {
@@ -191,12 +213,20 @@ h1 span {
 
   filter: drop-shadow(0 0 30px #39e58c55);
 
-  animation: float 4s ease-in-out infinite;
+  animation: float 5s ease-in-out infinite;
 }
 
 @keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
   50% {
-    transform: translateY(-18px) rotate(10deg);
+    transform: translateY(-18px) rotate(8deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
   }
 }
 
@@ -235,7 +265,7 @@ h1 span {
 
   padding: 22px;
 
-  transition: 0.2s;
+  transition: 0.25s;
 }
 
 .card:hover {
@@ -321,8 +351,6 @@ footer {
 
 @media (max-width: 700px) {
 
-  /* HEADER */
-
   .topbar {
     min-height: 60px;
     padding: 12px 5%;
@@ -331,7 +359,6 @@ footer {
 
   .logo {
     font-size: 17px;
-    white-space: nowrap;
   }
 
   .topbar nav {
@@ -429,18 +456,18 @@ footer {
     gap: 10px;
   }
 
-  /* PHONE BACKGROUND */
+  /* SMOOTH PHONE BACKGROUND */
 
   body::before {
-    opacity: 0.55;
-    filter: brightness(1.15);
+    opacity: 0.34;
+    filter: brightness(0.78);
     background-size: cover;
     background-position: center;
-    animation-duration: 30s;
+    animation-duration: 40s;
   }
 
   body::after {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.25);
   }
 }
 
