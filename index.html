@@ -1,9 +1,8 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <title>MOL L5IBRA — Football Stories</title>
 
@@ -12,14 +11,15 @@
 
 <body>
 
-  <!-- HEADER -->
+  <!-- ================= TOP BAR ================= -->
+
   <header class="topbar">
 
     <a class="logo" href="#home">
       MOL <span>L5IBRA</span>
     </a>
 
-    <nav class="desktop-nav">
+    <nav>
       <a href="#home">Home</a>
       <a href="#football">Football</a>
       <a href="#legends">Legends</a>
@@ -27,306 +27,211 @@
       <a href="#store">Store</a>
     </nav>
 
-    <button
-      class="profile-btn"
-      id="profileBtn"
-      type="button"
-      aria-label="Open profile">
-      👤
-    </button>
-
-    <button
-      class="menu-btn"
-      id="menuBtn"
-      type="button">
-      ☰
+    <!-- PROFILE -->
+    <button id="profileBtn" class="profile-btn" type="button">
+      <span class="profile-icon">👤</span>
+      <span>Profile</span>
     </button>
 
   </header>
 
 
-  <!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#home">Home</a>
-    <a href="#football">Football</a>
-    <a href="#legends">Legends</a>
-    <a href="#videos">Videos</a>
-    <a href="#store">Store</a>
-  </div>
+  <!-- ================= PROFILE SIDEBAR ================= -->
 
+  <div id="profileOverlay" class="profile-overlay"></div>
 
-  <!-- PROFILE OVERLAY -->
-  <div
-    class="profile-overlay"
-    id="profileOverlay">
-  </div>
+  <aside id="profileSidebar" class="profile-sidebar">
 
-
-  <!-- PROFILE DRAWER -->
-  <aside
-    class="profile-drawer"
-    id="profileDrawer"
-    aria-hidden="true">
+    <button id="closeProfile" class="close-profile" type="button">
+      ×
+    </button>
 
     <div class="profile-header">
 
-      <h2>My Profile</h2>
+      <div class="avatar-wrapper">
 
-      <button
-        class="profile-close"
-        id="profileClose"
-        type="button">
-        ✕
-      </button>
+        <img
+          id="profileAvatar"
+          src=""
+          alt="Profile picture"
+        >
 
-    </div>
-
-
-    <div class="profile-body">
-
-      <!-- =========================
-           NOT LOGGED IN
-           ========================= -->
-
-      <div
-        id="authView"
-        class="auth-view">
-
-        <div class="auth-icon">
+        <div id="defaultAvatar" class="default-avatar">
           👤
         </div>
 
-        <h3>
-          Welcome to MOL L5IBRA
-        </h3>
-
-        <p>
-          Login or create an account to manage your profile.
-        </p>
-
-
-        <!-- LOGIN -->
-
-        <div
-          id="loginForm"
-          class="auth-form">
-
-          <h3>Login</h3>
-
-          <label>Email</label>
-
-          <input
-            type="email"
-            id="loginEmail"
-            placeholder="Your email"
-            autocomplete="email">
-
-
-          <label>Password</label>
-
-          <input
-            type="password"
-            id="loginPassword"
-            placeholder="Your password"
-            autocomplete="current-password">
-
-
-          <button
-            class="primary-btn"
-            id="loginBtn"
-            type="button">
-            Login
-          </button>
-
-
-          <p
-            class="auth-switch"
-            id="showSignup">
-            Don't have an account?
-            <span>Create one</span>
-          </p>
-
-        </div>
-
-
-        <!-- SIGN UP -->
-
-        <div
-          id="signupForm"
-          class="auth-form hidden">
-
-          <h3>Create account</h3>
-
-          <label>Name</label>
-
-          <input
-            type="text"
-            id="signupName"
-            placeholder="Your name"
-            autocomplete="name">
-
-
-          <label>Email</label>
-
-          <input
-            type="email"
-            id="signupEmail"
-            placeholder="Your email"
-            autocomplete="email">
-
-
-          <label>Password</label>
-
-          <input
-            type="password"
-            id="signupPassword"
-            placeholder="Create a password"
-            autocomplete="new-password">
-
-
-          <button
-            class="primary-btn"
-            id="signupBtn"
-            type="button">
-            Create account
-          </button>
-
-
-          <p
-            class="auth-switch"
-            id="showLogin">
-            Already have an account?
-            <span>Login</span>
-          </p>
-
-        </div>
-
-
-        <p
-          id="authMessage"
-          class="auth-message">
-        </p>
-
       </div>
 
+      <h2 id="profileName">Guest</h2>
 
-      <!-- =========================
-           LOGGED IN PROFILE
-           ========================= -->
+      <p id="profileEmail">Not connected</p>
 
-      <div
-        id="accountView"
-        class="account-view hidden">
-
-        <div class="profile-picture">
-
-          <div
-            class="profile-avatar"
-            id="profileAvatar">
-            👤
-          </div>
-
-          <button
-            class="change-photo"
-            id="changePhoto"
-            type="button">
-            Change photo
-          </button>
-
-          <input
-            type="file"
-            id="photoInput"
-            accept="image/*"
-            hidden>
-
-        </div>
+    </div>
 
 
-        <div class="profile-details">
+    <!-- USER INFORMATION -->
 
-          <p class="profile-label">
-            Name
-          </p>
+    <div class="profile-info">
 
-          <h3 id="profileName">
-            MOL L5IBRA Client
-          </h3>
+      <div class="info-box">
+        <span class="info-label">NAME</span>
+        <strong id="infoName">—</strong>
+      </div>
 
-
-          <p class="profile-label">
-            Email
-          </p>
-
-          <p
-            class="profile-email"
-            id="profileEmail">
-            —
-          </p>
-
-        </div>
-
-
-        <button
-          class="change-info"
-          id="changeInfo"
-          type="button">
-          ⚙️ Change information
-        </button>
-
-
-        <!-- EDIT PROFILE -->
-
-        <div
-          class="edit-form"
-          id="editForm">
-
-          <label>
-            Your name
-          </label>
-
-          <input
-            type="text"
-            id="nameInput"
-            placeholder="Enter your name">
-
-
-          <button
-            class="save-profile"
-            id="saveProfile"
-            type="button">
-            Save changes
-          </button>
-
-        </div>
-
-
-        <!-- LOGOUT -->
-
-        <button
-          class="logout-btn"
-          id="logoutBtn"
-          type="button">
-          🚪 Logout
-        </button>
-
+      <div class="info-box">
+        <span class="info-label">GMAIL</span>
+        <strong id="infoEmail">—</strong>
       </div>
 
     </div>
+
+
+    <!-- EDIT BUTTON -->
+
+    <button id="editProfileBtn" class="profile-action" type="button">
+      ✏️ Change information
+    </button>
+
+
+    <!-- EDIT FORM -->
+
+    <div id="editProfileBox" class="edit-profile-box">
+
+      <label for="newName">
+        Name
+      </label>
+
+      <input
+        id="newName"
+        type="text"
+        placeholder="Enter your name"
+        maxlength="40"
+      >
+
+      <label for="avatarInput">
+        Profile picture
+      </label>
+
+      <input
+        id="avatarInput"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+      >
+
+      <button id="saveProfileBtn" class="save-profile" type="button">
+        Save changes
+      </button>
+
+      <p id="profileMessage" class="profile-message"></p>
+
+    </div>
+
+
+    <!-- LOGOUT -->
+
+    <button id="logoutBtn" class="logout-btn" type="button">
+      Logout
+    </button>
 
   </aside>
 
 
-  <!-- =========================
-       MAIN
-       ========================= -->
+  <!-- ================= LOGIN MODAL ================= -->
+
+  <div id="loginOverlay" class="login-overlay">
+
+    <div class="login-box">
+
+      <div class="login-logo">
+        MOL <span>L5IBRA</span>
+      </div>
+
+      <h2>Welcome</h2>
+
+      <p class="login-description">
+        Enter your name and Gmail to continue.
+      </p>
+
+
+      <!-- STEP 1 -->
+
+      <div id="loginStep1">
+
+        <label for="loginName">
+          Your name
+        </label>
+
+        <input
+          id="loginName"
+          type="text"
+          placeholder="Enter your name"
+          maxlength="40"
+        >
+
+        <label for="loginEmail">
+          Gmail
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="example@gmail.com"
+        >
+
+        <button id="sendCodeBtn" class="login-btn" type="button">
+          Send code
+        </button>
+
+        <p id="loginMessage" class="login-message"></p>
+
+      </div>
+
+
+      <!-- STEP 2 -->
+
+      <div id="loginStep2" class="hidden">
+
+        <p class="code-info">
+          We sent a verification code to your Gmail.
+        </p>
+
+        <label for="loginCode">
+          Verification code
+        </label>
+
+        <input
+          id="loginCode"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          placeholder="Enter the code"
+          maxlength="6"
+        >
+
+        <button id="verifyCodeBtn" class="login-btn" type="button">
+          Verify & Enter
+        </button>
+
+        <button id="backLoginBtn" class="back-btn" type="button">
+          ← Change email
+        </button>
+
+        <p id="verifyMessage" class="login-message"></p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= MAIN ================= -->
 
   <main>
 
     <!-- HERO -->
 
-    <section
-      id="home"
-      class="hero">
+    <section id="home" class="hero">
 
       <div class="hero-content">
 
@@ -344,9 +249,7 @@
           Football stories, legendary players and words that stay with you.
         </p>
 
-        <a
-          class="cta"
-          href="#football">
+        <a class="cta" href="#football">
           Explore the game →
         </a>
 
@@ -361,9 +264,7 @@
 
     <!-- FOOTBALL -->
 
-    <section
-      id="football"
-      class="section">
+    <section id="football" class="section">
 
       <div class="section-title">
 
@@ -377,19 +278,14 @@
 
       </div>
 
-      <div
-        id="news-grid"
-        class="grid">
-      </div>
+      <div id="news-grid" class="grid"></div>
 
     </section>
 
 
     <!-- LEGENDS -->
 
-    <section
-      id="legends"
-      class="section alt">
+    <section id="legends" class="section alt">
 
       <div class="section-title">
 
@@ -403,19 +299,14 @@
 
       </div>
 
-      <div
-        id="legends-grid"
-        class="grid">
-      </div>
+      <div id="legends-grid" class="grid"></div>
 
     </section>
 
 
     <!-- VIDEOS -->
 
-    <section
-      id="videos"
-      class="section">
+    <section id="videos" class="section">
 
       <div class="section-title">
 
@@ -436,6 +327,7 @@
         </div>
 
         <div>
+
           <h3>
             Football stories coming soon
           </h3>
@@ -443,6 +335,7 @@
           <p>
             Add your videos from the Admin Panel.
           </p>
+
         </div>
 
       </div>
@@ -452,9 +345,7 @@
 
     <!-- STORE -->
 
-    <section
-      id="store"
-      class="section alt">
+    <section id="store" class="section alt">
 
       <div class="section-title">
 
@@ -468,17 +359,14 @@
 
       </div>
 
-      <div
-        id="store-grid"
-        class="grid">
-      </div>
+      <div id="store-grid" class="grid"></div>
 
     </section>
 
   </main>
 
 
-  <!-- FOOTER -->
+  <!-- ================= FOOTER ================= -->
 
   <footer>
 
@@ -492,6 +380,8 @@
 
   </footer>
 
+
+  <!-- ================= SCRIPTS ================= -->
 
   <script src="config.js"></script>
   <script src="script.js"></script>
