@@ -1,390 +1,237 @@
 <!doctype html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-
   <title>MOL L5IBRA — Football Stories</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- ================= TOP BAR ================= -->
-
-  <header class="topbar">
-
-    <a class="logo" href="#home">
-      MOL <span>L5IBRA</span>
-    </a>
-
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#football">Football</a>
-      <a href="#legends">Legends</a>
-      <a href="#videos">Videos</a>
-      <a href="#store">Store</a>
-    </nav>
-
-    <!-- PROFILE -->
-    <button id="profileBtn" class="profile-btn" type="button">
-      <span class="profile-icon">👤</span>
-      <span>Profile</span>
-    </button>
-
-  </header>
-
-
-  <!-- ================= PROFILE SIDEBAR ================= -->
-
-  <div id="profileOverlay" class="profile-overlay"></div>
-
-  <aside id="profileSidebar" class="profile-sidebar">
-
-    <button id="closeProfile" class="close-profile" type="button">
-      ×
-    </button>
-
-    <div class="profile-header">
-
-      <div class="avatar-wrapper">
-
-        <img
-          id="profileAvatar"
-          src=""
-          alt="Profile picture"
-        >
-
-        <div id="defaultAvatar" class="default-avatar">
-          👤
-        </div>
-
-      </div>
-
-      <h2 id="profileName">Guest</h2>
-
-      <p id="profileEmail">Not connected</p>
-
-    </div>
-
-
-    <!-- USER INFORMATION -->
-
-    <div class="profile-info">
-
-      <div class="info-box">
-        <span class="info-label">NAME</span>
-        <strong id="infoName">—</strong>
-      </div>
-
-      <div class="info-box">
-        <span class="info-label">GMAIL</span>
-        <strong id="infoEmail">—</strong>
-      </div>
-
-    </div>
-
-
-    <!-- EDIT BUTTON -->
-
-    <button id="editProfileBtn" class="profile-action" type="button">
-      ✏️ Change information
-    </button>
-
-
-    <!-- EDIT FORM -->
-
-    <div id="editProfileBox" class="edit-profile-box">
-
-      <label for="newName">
-        Name
-      </label>
-
-      <input
-        id="newName"
-        type="text"
-        placeholder="Enter your name"
-        maxlength="40"
-      >
-
-      <label for="avatarInput">
-        Profile picture
-      </label>
-
-      <input
-        id="avatarInput"
-        type="file"
-        accept="image/png,image/jpeg,image/webp"
-      >
-
-      <button id="saveProfileBtn" class="save-profile" type="button">
-        Save changes
-      </button>
-
-      <p id="profileMessage" class="profile-message"></p>
-
-    </div>
-
-
-    <!-- LOGOUT -->
-
-    <button id="logoutBtn" class="logout-btn" type="button">
-      Logout
-    </button>
-
-  </aside>
-
-
-  <!-- ================= LOGIN MODAL ================= -->
-
-  <div id="loginOverlay" class="login-overlay">
-
-    <div class="login-box">
-
-      <div class="login-logo">
-        MOL <span>L5IBRA</span>
-      </div>
-
-      <h2>Welcome</h2>
-
-      <p class="login-description">
-        Enter your name and Gmail to continue.
-      </p>
-
-
-      <!-- STEP 1 -->
-
-      <div id="loginStep1">
-
-        <label for="loginName">
-          Your name
-        </label>
-
-        <input
-          id="loginName"
-          type="text"
-          placeholder="Enter your name"
-          maxlength="40"
-        >
-
-        <label for="loginEmail">
-          Gmail
-        </label>
-
-        <input
-          id="loginEmail"
-          type="email"
-          placeholder="example@gmail.com"
-        >
-
-        <button id="sendCodeBtn" class="login-btn" type="button">
-          Send code
-        </button>
-
-        <p id="loginMessage" class="login-message"></p>
-
-      </div>
-
-
-      <!-- STEP 2 -->
-
-      <div id="loginStep2" class="hidden">
-
-        <p class="code-info">
-          We sent a verification code to your Gmail.
-        </p>
-
-        <label for="loginCode">
-          Verification code
-        </label>
-
-        <input
-          id="loginCode"
-          type="text"
-          inputmode="numeric"
-          autocomplete="one-time-code"
-          placeholder="Enter the code"
-          maxlength="6"
-        >
-
-        <button id="verifyCodeBtn" class="login-btn" type="button">
-          Verify & Enter
-        </button>
-
-        <button id="backLoginBtn" class="back-btn" type="button">
-          ← Change email
-        </button>
-
-        <p id="verifyMessage" class="login-message"></p>
-
-      </div>
-
-    </div>
+<header class="topbar">
+  <a class="logo" href="#home">MOL <span>L5IBRA</span></a>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#football">Football</a>
+    <a href="#legends">Legends</a>
+    <a href="#videos">Videos</a>
+    <a href="#store">Store</a>
+  </nav>
+
+  <button id="profileBtn" class="profile-btn" type="button">
+    <span class="profile-icon">👤</span>
+    <span>Profile</span>
+  </button>
+</header>
+
+<div id="profileOverlay" class="profile-overlay"></div>
+
+<aside id="profileSidebar" class="profile-sidebar">
+
+<button id="closeProfile" class="close-profile" type="button">×</button>
+
+  <div class="profile-header">
+
+```
+<div class="avatar-wrapper">
+  <img id="profileAvatar" src="" alt="Profile picture">
+  <div id="defaultAvatar" class="default-avatar">👤</div>
+</div>
+
+<h2 id="profileName">Guest</h2>
+<p id="profileEmail">Not connected</p>
+```
 
   </div>
 
+  <div class="profile-info">
 
-  <!-- ================= MAIN ================= -->
+```
+<div class="info-box">
+  <span class="info-label">NAME</span>
+  <strong id="infoName">—</strong>
+</div>
 
-  <main>
+<div class="info-box">
+  <span class="info-label">GMAIL</span>
+  <strong id="infoEmail">—</strong>
+</div>
+```
 
-    <!-- HERO -->
+  </div>
 
-    <section id="home" class="hero">
+  <button id="editProfileBtn" class="profile-action" type="button">
+    ✏️ Change information
+  </button>
 
-      <div class="hero-content">
+  <div id="editProfileBox" class="edit-profile-box">
 
-        <p class="eyebrow">
-          FOOTBALL • WISDOM • STORIES
-        </p>
+```
+<label for="newName">Name</label>
 
-        <h1>
-          THE GAME.<br>
-          <span>THE STORIES.</span><br>
-          THE LEGACY.
-        </h1>
+<input
+  id="newName"
+  type="text"
+  placeholder="Enter your name"
+  maxlength="40"
+>
 
-        <p class="lead">
-          Football stories, legendary players and words that stay with you.
-        </p>
+<label for="avatarInput">Profile picture</label>
 
-        <a class="cta" href="#football">
-          Explore the game →
-        </a>
+<input
+  id="avatarInput"
+  type="file"
+  accept="image/png,image/jpeg,image/webp"
+>
 
-      </div>
+<button id="saveProfileBtn" class="save-profile" type="button">
+  Save changes
+</button>
 
-      <div class="ball">
-        ⚽
-      </div>
+<p id="profileMessage" class="profile-message"></p>
+```
 
-    </section>
+  </div>
 
+  <button id="logoutBtn" class="logout-btn" type="button">
+    Logout
+  </button>
 
-    <!-- FOOTBALL -->
+</aside>
 
-    <section id="football" class="section">
+<!-- GOOGLE LOGIN -->
 
-      <div class="section-title">
+<div id="loginOverlay" class="login-overlay">
 
-        <p class="eyebrow">
-          LATEST
-        </p>
+  <div class="login-box">
 
-        <h2>
-          Football
-        </h2>
+```
+<div class="login-logo">
+  MOL <span>L5IBRA</span>
+</div>
 
-      </div>
+<h2>Welcome</h2>
 
-      <div id="news-grid" class="grid"></div>
+<p class="login-description">
+  Sign in with your Google account to continue.
+</p>
 
-    </section>
+<button id="googleLoginBtn" class="login-btn" type="button">
+  Continue with Google
+</button>
 
+<p id="loginMessage" class="login-message"></p>
+```
 
-    <!-- LEGENDS -->
+  </div>
 
-    <section id="legends" class="section alt">
+</div>
 
-      <div class="section-title">
+<main>
 
-        <p class="eyebrow">
-          THE GREATS
-        </p>
+<section id="home" class="hero">
 
-        <h2>
-          Legends
-        </h2>
+  <div class="hero-content">
 
-      </div>
+```
+<p class="eyebrow">
+  FOOTBALL • WISDOM • STORIES
+</p>
 
-      <div id="legends-grid" class="grid"></div>
+<h1>
+  THE GAME.<br>
+  <span>THE STORIES.</span><br>
+  THE LEGACY.
+</h1>
 
-    </section>
+<p class="lead">
+  Football stories, legendary players and words that stay with you.
+</p>
 
+<a class="cta" href="#football">
+  Explore the game →
+</a>
+```
 
-    <!-- VIDEOS -->
+  </div>
 
-    <section id="videos" class="section">
+  <div class="ball">⚽</div>
 
-      <div class="section-title">
+</section>
 
-        <p class="eyebrow">
-          WATCH
-        </p>
+<section id="football" class="section">
 
-        <h2>
-          Videos
-        </h2>
+  <div class="section-title">
+    <p class="eyebrow">LATEST</p>
+    <h2>Football</h2>
+  </div>
 
-      </div>
+  <div id="news-grid" class="grid"></div>
 
-      <div class="video-card">
+</section>
 
-        <div class="play">
-          ▶
-        </div>
+<section id="legends" class="section alt">
 
-        <div>
+  <div class="section-title">
+    <p class="eyebrow">THE GREATS</p>
+    <h2>Legends</h2>
+  </div>
 
-          <h3>
-            Football stories coming soon
-          </h3>
+  <div id="legends-grid" class="grid"></div>
 
-          <p>
-            Add your videos from the Admin Panel.
-          </p>
+</section>
 
-        </div>
+<section id="videos" class="section">
 
-      </div>
+  <div class="section-title">
+    <p class="eyebrow">WATCH</p>
+    <h2>Videos</h2>
+  </div>
 
-    </section>
+  <div class="video-card">
 
+```
+<div class="play">▶</div>
 
-    <!-- STORE -->
+<div>
+  <h3>Football stories coming soon</h3>
+  <p>Add your videos from the Admin Panel.</p>
+</div>
+```
 
-    <section id="store" class="section alt">
+  </div>
 
-      <div class="section-title">
+</section>
 
-        <p class="eyebrow">
-          SHOP
-        </p>
+<section id="store" class="section alt">
 
-        <h2>
-          Store
-        </h2>
+  <div class="section-title">
+    <p class="eyebrow">SHOP</p>
+    <h2>Store</h2>
+  </div>
 
-      </div>
+  <div id="store-grid" class="grid"></div>
 
-      <div id="store-grid" class="grid"></div>
+</section>
 
-    </section>
+</main>
 
-  </main>
+<footer>
 
+<strong>MOL L5IBRA</strong>
 
-  <!-- ================= FOOTER ================= -->
+  <span>
+    Football • Wisdom • Stories
+  </span>
 
-  <footer>
+</footer>
 
-    <strong>
-      MOL L5IBRA
-    </strong>
+<script src="config.js"></script>
 
-    <span>
-      Football • Wisdom • Stories
-    </span>
-
-  </footer>
-
-
-  <!-- ================= SCRIPTS ================= -->
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
