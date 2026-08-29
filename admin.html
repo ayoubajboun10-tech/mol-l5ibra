@@ -1,312 +1,796 @@
 <!doctype html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
+
   <title>MOL L5IBRA Admin</title>
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="config.js"></script>
+
 </head>
 
 <body>
 
 <header class="topbar">
-  <a class="logo" href="index.html">MOL <span>L5IBRA</span></a>
-  <a class="admin-btn" href="index.html">SITE</a>
+
+  <a class="logo" href="index.html">
+    MOL <span>L5IBRA</span>
+  </a>
+
+  <a class="admin-btn" href="index.html">
+    SITE
+  </a>
+
 </header>
 
 <main class="section">
 
-  <!-- LOGIN -->
-  <section id="login-section">
-    <div class="section-title">
-      <p class="eyebrow">CONTROL CENTER</p>
-      <h2>Admin Login</h2>
-    </div>
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
-    <div class="card" style="max-width:500px;">
-      <h3>Login</h3>
+<section id="login-section">
 
-      <form id="login-form">
-        <input
-          id="email"
-          type="email"
-          placeholder="Admin email"
-          required
-          style="width:100%;padding:12px;margin:8px 0;"
-        >
+  <div class="section-title">
 
-        <input
-          id="password"
-          type="password"
-          placeholder="Password"
-          required
-          style="width:100%;padding:12px;margin:8px 0;"
-        >
+```
+<p class="eyebrow">
+  CONTROL CENTER
+</p>
 
-        <button class="cta" type="submit">LOGIN</button>
-      </form>
+<h2>
+  Admin Login
+</h2>
+```
 
-      <p id="login-message"></p>
-    </div>
-  </section>
+  </div>
 
-  <!-- ADMIN PANEL -->
-  <section id="admin-section" style="display:none;">
+  <div
+    class="card"
+    style="max-width:500px;"
+  >
 
-    <div class="section-title">
-      <p class="eyebrow">CONTROL CENTER</p>
-      <h2>Admin Panel</h2>
-    </div>
+```
+<h3>
+  Admin Access
+</h3>
 
-    <div class="card" style="max-width:700px;">
+<p style="color:#9ba6b3;">
+  Sign in using the authorized Google account.
+</p>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-        <h3>Manage Content</h3>
-        <button id="logout-btn" class="cta" type="button">LOGOUT</button>
-      </div>
 
-      <hr>
+<button
+  id="google-admin-btn"
+  class="cta"
+  type="button"
+>
+  CONTINUE WITH GOOGLE
+</button>
 
-      <form id="content-form">
 
-        <label>Type</label>
-        <select id="type" required style="width:100%;padding:12px;margin:8px 0;">
-          <option value="news">News</option>
-          <option value="legend">Legend</option>
-          <option value="product">Product</option>
-        </select>
+<p id="login-message"></p>
+```
 
-        <label>Title</label>
-        <input
-          id="title"
-          type="text"
-          placeholder="Title"
-          required
-          style="width:100%;padding:12px;margin:8px 0;"
-        >
+  </div>
 
-        <label>Text</label>
-        <textarea
-          id="text"
-          placeholder="Content"
-          rows="5"
-          style="width:100%;padding:12px;margin:8px 0;"
-        ></textarea>
+</section>
 
-        <label>Tag</label>
-        <input
-          id="tag"
-          type="text"
-          placeholder="Tag"
-          style="width:100%;padding:12px;margin:8px 0;"
-        >
+<!-- =====================================================
+     ADMIN PANEL
+===================================================== -->
 
-        <label>Price</label>
-        <input
-          id="price"
-          type="text"
-          placeholder="Price"
-          style="width:100%;padding:12px;margin:8px 0;"
-        >
+<section
+  id="admin-section"
+  style="display:none;"
+>
 
-        <button class="cta" type="submit">ADD CONTENT</button>
+  <div class="section-title">
 
-      </form>
+```
+<p class="eyebrow">
+  CONTROL CENTER
+</p>
 
-      <p id="content-message"></p>
+<h2>
+  Admin Panel
+</h2>
+```
 
-    </div>
+  </div>
 
-    <div class="card" style="max-width:900px;margin-top:25px;">
-      <h3>Current Content</h3>
-      <div id="content-list">Loading...</div>
-    </div>
+  <div
+    class="card"
+    style="max-width:700px;"
+  >
 
-  </section>
+```
+<div
+  style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  "
+>
+
+  <h3>
+    Manage Content
+  </h3>
+
+  <button
+    id="logout-btn"
+    class="cta"
+    type="button"
+  >
+    LOGOUT
+  </button>
+
+</div>
+
+
+<hr>
+
+
+<form id="content-form">
+
+
+  <label>
+    Type
+  </label>
+
+  <select
+    id="type"
+    required
+    style="
+      width:100%;
+      padding:12px;
+      margin:8px 0;
+    "
+  >
+
+    <option value="news">
+      News
+    </option>
+
+    <option value="legend">
+      Legend
+    </option>
+
+    <option value="product">
+      Product
+    </option>
+
+  </select>
+
+
+  <label>
+    Title
+  </label>
+
+  <input
+    id="title"
+    type="text"
+    placeholder="Title"
+    required
+    style="
+      width:100%;
+      padding:12px;
+      margin:8px 0;
+    "
+  >
+
+
+  <label>
+    Text
+  </label>
+
+  <textarea
+    id="text"
+    placeholder="Content"
+    rows="5"
+    style="
+      width:100%;
+      padding:12px;
+      margin:8px 0;
+    "
+  ></textarea>
+
+
+  <label>
+    Tag
+  </label>
+
+  <input
+    id="tag"
+    type="text"
+    placeholder="Tag"
+    style="
+      width:100%;
+      padding:12px;
+      margin:8px 0;
+    "
+  >
+
+
+  <label>
+    Price
+  </label>
+
+  <input
+    id="price"
+    type="text"
+    placeholder="Price"
+    style="
+      width:100%;
+      padding:12px;
+      margin:8px 0;
+    "
+  >
+
+
+  <button
+    class="cta"
+    type="submit"
+  >
+    ADD CONTENT
+  </button>
+
+</form>
+
+
+<p id="content-message"></p>
+```
+
+  </div>
+
+  <div
+    class="card"
+    style="
+      max-width:900px;
+      margin-top:25px;
+    "
+  >
+
+```
+<h3>
+  Current Content
+</h3>
+
+<div id="content-list">
+  Loading...
+</div>
+```
+
+  </div>
+
+</section>
 
 </main>
 
 <script>
-  const supabaseClient = window.supabase.createClient(
+
+const supabaseClient =
+  window.supabase.createClient(
     window.SUPABASE_URL,
     window.SUPABASE_ANON_KEY
   );
 
-  const ADMIN_EMAIL = "ayoub.ajboun10@gmail.com";
 
-  const loginSection = document.getElementById("login-section");
-  const adminSection = document.getElementById("admin-section");
+/* IMPORTANT:
+   Only this Google account can access Admin.
+*/
 
-  const loginForm = document.getElementById("login-form");
-  const loginMessage = document.getElementById("login-message");
+const ADMIN_EMAIL =
+  "ayoub.ajboun10@gmail.com";
 
-  const contentForm = document.getElementById("content-form");
-  const contentMessage = document.getElementById("content-message");
 
-  const contentList = document.getElementById("content-list");
-  const logoutBtn = document.getElementById("logout-btn");
+const loginSection =
+  document.getElementById(
+    "login-section"
+  );
 
-  async function checkSession() {
-    const { data, error } = await supabaseClient.auth.getSession();
+const adminSection =
+  document.getElementById(
+    "admin-section"
+  );
+
+const googleAdminBtn =
+  document.getElementById(
+    "google-admin-btn"
+  );
+
+const loginMessage =
+  document.getElementById(
+    "login-message"
+  );
+
+const contentForm =
+  document.getElementById(
+    "content-form"
+  );
+
+const contentMessage =
+  document.getElementById(
+    "content-message"
+  );
+
+const contentList =
+  document.getElementById(
+    "content-list"
+  );
+
+const logoutBtn =
+  document.getElementById(
+    "logout-btn"
+  );
+
+
+/* =====================================================
+   SHOW LOGIN
+===================================================== */
+
+function showLogin() {
+
+  loginSection.style.display =
+    "block";
+
+  adminSection.style.display =
+    "none";
+}
+
+
+/* =====================================================
+   SHOW ADMIN
+===================================================== */
+
+function showAdmin() {
+
+  loginSection.style.display =
+    "none";
+
+  adminSection.style.display =
+    "block";
+
+  loadContent();
+}
+
+
+/* =====================================================
+   GOOGLE LOGIN
+===================================================== */
+
+googleAdminBtn.addEventListener(
+  "click",
+  async () => {
+
+    loginMessage.textContent =
+      "Connecting to Google...";
+
+
+    googleAdminBtn.disabled =
+      true;
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .auth
+        .signInWithOAuth({
+
+          provider: "google",
+
+          options: {
+
+            redirectTo:
+              window.location.origin +
+              window.location.pathname
+
+          }
+
+        });
+
 
     if (error) {
+
       console.error(error);
-      return;
+
+      loginMessage.textContent =
+        error.message;
+
+      googleAdminBtn.disabled =
+        false;
     }
 
-    if (data.session && data.session.user.email === ADMIN_EMAIL) {
-      showAdmin();
-    } else {
-      showLogin();
-    }
   }
+);
 
-  function showLogin() {
-    loginSection.style.display = "block";
-    adminSection.style.display = "none";
-  }
 
-  function showAdmin() {
-    loginSection.style.display = "none";
-    adminSection.style.display = "block";
-    loadContent();
-  }
+/* =====================================================
+   CHECK SESSION
+===================================================== */
 
-  loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+async function checkSession() {
 
-    loginMessage.textContent = "Logging in...";
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
 
-    if (email !== ADMIN_EMAIL) {
-      loginMessage.textContent = "This account is not an admin account.";
-      return;
-    }
+  if (error) {
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
+    console.error(error);
 
-    if (error) {
-      loginMessage.textContent = error.message;
-      return;
-    }
-
-    if (!data.user || data.user.email !== ADMIN_EMAIL) {
-      await supabaseClient.auth.signOut();
-      loginMessage.textContent = "Access denied.";
-      return;
-    }
-
-    loginMessage.textContent = "";
-    showAdmin();
-  });
-
-  logoutBtn.addEventListener("click", async () => {
-    await supabaseClient.auth.signOut();
     showLogin();
-  });
 
-  contentForm.addEventListener("submit", async (event) => {
+    return;
+  }
+
+
+  const user =
+    data.session?.user;
+
+
+  if (!user) {
+
+    showLogin();
+
+    return;
+  }
+
+
+  if (
+    user.email !== ADMIN_EMAIL
+  ) {
+
+    await supabaseClient
+      .auth
+      .signOut();
+
+
+    showLogin();
+
+    loginMessage.textContent =
+      "This Google account is not authorized as admin.";
+
+    return;
+  }
+
+
+  showAdmin();
+}
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+supabaseClient.auth.onAuthStateChange(
+  async (
+    event,
+    session
+  ) => {
+
+    if (
+      event === "SIGNED_IN" &&
+      session?.user
+    ) {
+
+      if (
+        session.user.email !==
+        ADMIN_EMAIL
+      ) {
+
+        await supabaseClient
+          .auth
+          .signOut();
+
+        showLogin();
+
+        loginMessage.textContent =
+          "Access denied.";
+
+        return;
+      }
+
+
+      showAdmin();
+    }
+
+
+    if (
+      event === "SIGNED_OUT"
+    ) {
+
+      showLogin();
+    }
+
+  }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    await supabaseClient
+      .auth
+      .signOut();
+
+    showLogin();
+
+  }
+);
+
+
+/* =====================================================
+   ADD CONTENT
+===================================================== */
+
+contentForm.addEventListener(
+  "submit",
+  async (event) => {
+
     event.preventDefault();
 
-    contentMessage.textContent = "Adding...";
+    contentMessage.textContent =
+      "Adding...";
 
-    const type = document.getElementById("type").value;
-    const title = document.getElementById("title").value.trim();
-    const text = document.getElementById("text").value.trim();
-    const tag = document.getElementById("tag").value.trim();
-    const price = document.getElementById("price").value.trim();
 
-    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const {
+      data: sessionData
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
 
-    if (!sessionData.session) {
-      contentMessage.textContent = "You are not logged in.";
+
+    const user =
+      sessionData.session?.user;
+
+
+    if (!user) {
+
+      contentMessage.textContent =
+        "You are not logged in.";
+
       showLogin();
+
       return;
     }
 
-    if (sessionData.session.user.email !== ADMIN_EMAIL) {
-      contentMessage.textContent = "Access denied.";
+
+    if (
+      user.email !==
+      ADMIN_EMAIL
+    ) {
+
+      contentMessage.textContent =
+        "Access denied.";
+
       return;
     }
 
-    const { error } = await supabaseClient
-      .from("content")
-      .insert({
-        type,
-        title,
-        text: text || null,
-        tag: tag || null,
-        price: price || null
-      });
+
+    const type =
+      document
+        .getElementById("type")
+        .value;
+
+
+    const title =
+      document
+        .getElementById("title")
+        .value
+        .trim();
+
+
+    const text =
+      document
+        .getElementById("text")
+        .value
+        .trim();
+
+
+    const tag =
+      document
+        .getElementById("tag")
+        .value
+        .trim();
+
+
+    const price =
+      document
+        .getElementById("price")
+        .value
+        .trim();
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("content")
+        .insert({
+
+          type,
+          title,
+          text: text || null,
+          tag: tag || null,
+          price: price || null
+
+        });
+
 
     if (error) {
-      contentMessage.textContent = error.message;
+
+      console.error(error);
+
+      contentMessage.textContent =
+        error.message;
+
       return;
     }
 
-    contentMessage.textContent = "Content added successfully ✅";
+
+    contentMessage.textContent =
+      "Content added successfully ✅";
+
+
     contentForm.reset();
+
     loadContent();
-  });
 
-  async function loadContent() {
-    contentList.innerHTML = "Loading...";
+  }
+);
 
-    const { data, error } = await supabaseClient
+
+/* =====================================================
+   LOAD CONTENT
+===================================================== */
+
+async function loadContent() {
+
+  contentList.innerHTML =
+    "Loading...";
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
       .from("content")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
 
-    if (error) {
-      contentList.textContent = error.message;
-      return;
-    }
 
-    if (!data || data.length === 0) {
-      contentList.textContent = "No content yet.";
-      return;
-    }
+  if (error) {
 
-    contentList.innerHTML = "";
+    contentList.textContent =
+      error.message;
 
-    data.forEach((item) => {
-      const wrapper = document.createElement("div");
+    return;
+  }
 
-      wrapper.style.borderBottom = "1px solid #444";
-      wrapper.style.padding = "15px 0";
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    contentList.textContent =
+      "No content yet.";
+
+    return;
+  }
+
+
+  contentList.innerHTML =
+    "";
+
+
+  data.forEach(
+    (item) => {
+
+      const wrapper =
+        document.createElement(
+          "div"
+        );
+
+
+      wrapper.style.borderBottom =
+        "1px solid #444";
+
+
+      wrapper.style.padding =
+        "15px 0";
+
 
       wrapper.innerHTML = `
-        <strong>${escapeHtml(item.title)}</strong>
-        <div>${escapeHtml(item.type)}</div>
-        <small>${escapeHtml(item.tag || "")}</small>
-        <p>${escapeHtml(item.text || "")}</p>
-        ${item.price ? `<span>${escapeHtml(item.price)}</span>` : ""}
+
+        <strong>
+          ${escapeHtml(item.title)}
+        </strong>
+
+        <div>
+          ${escapeHtml(item.type)}
+        </div>
+
+        <small>
+          ${escapeHtml(item.tag || "")}
+        </small>
+
+        <p>
+          ${escapeHtml(item.text || "")}
+        </p>
+
+        ${
+          item.price
+            ? `<span>${escapeHtml(item.price)}</span>`
+            : ""
+        }
+
       `;
 
-      contentList.appendChild(wrapper);
-    });
-  }
 
-  function escapeHtml(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
+      contentList.appendChild(
+        wrapper
+      );
 
-  checkSession();
+    }
+  );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* START */
+
+checkSession();
+
 </script>
 
 </body>
