@@ -1,13 +1,16 @@
 <!doctype html>
-
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>MOL L5IBRA — Football Stories</title>
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -34,11 +37,9 @@
 </header>
 
 <!-- PROFILE OVERLAY -->
-
 <div id="profileOverlay" class="profile-overlay"></div>
 
 <!-- PROFILE SIDEBAR -->
-
 <aside id="profileSidebar" class="profile-sidebar">
 
   <button id="closeProfile" class="close-profile" type="button">
@@ -47,41 +48,37 @@
 
   <div class="profile-header">
 
-```
-<div class="avatar-wrapper">
+    <div class="avatar-wrapper">
 
-  <img
-    id="profileAvatar"
-    src=""
-    alt="Profile picture"
-  >
+      <img
+        id="profileAvatar"
+        src=""
+        alt="Profile picture"
+      >
 
-  <div id="defaultAvatar" class="default-avatar">
-    👤
-  </div>
+      <div id="defaultAvatar" class="default-avatar">
+        👤
+      </div>
 
-</div>
+    </div>
 
-<h2 id="profileName">Guest</h2>
+    <h2 id="profileName">Guest</h2>
 
-<p id="profileEmail">Not connected</p>
-```
+    <p id="profileEmail">Not connected</p>
 
   </div>
 
   <div class="profile-info">
 
-```
-<div class="info-box">
-  <span class="info-label">NAME</span>
-  <strong id="infoName">—</strong>
-</div>
+    <div class="info-box">
+      <span class="info-label">NAME</span>
+      <strong id="infoName">—</strong>
+    </div>
 
-<div class="info-box">
-  <span class="info-label">GMAIL</span>
-  <strong id="infoEmail">—</strong>
-</div>
-```
+    <div class="info-box">
+      <span class="info-label">GMAIL</span>
+      <strong id="infoEmail">—</strong>
+    </div>
 
   </div>
 
@@ -91,30 +88,28 @@
 
   <div id="editProfileBox" class="edit-profile-box">
 
-```
-<label for="newName">Name</label>
+    <label for="newName">Name</label>
 
-<input
-  id="newName"
-  type="text"
-  placeholder="Enter your name"
-  maxlength="40"
->
+    <input
+      id="newName"
+      type="text"
+      placeholder="Enter your name"
+      maxlength="40"
+    >
 
-<label for="avatarInput">Profile picture</label>
+    <label for="avatarInput">Profile picture</label>
 
-<input
-  id="avatarInput"
-  type="file"
-  accept="image/png,image/jpeg,image/webp"
->
+    <input
+      id="avatarInput"
+      type="file"
+      accept="image/png,image/jpeg,image/webp"
+    >
 
-<button id="saveProfileBtn" class="save-profile" type="button">
-  Save changes
-</button>
+    <button id="saveProfileBtn" class="save-profile" type="button">
+      Save changes
+    </button>
 
-<p id="profileMessage" class="profile-message"></p>
-```
+    <p id="profileMessage" class="profile-message"></p>
 
   </div>
 
@@ -125,28 +120,25 @@
 </aside>
 
 <!-- GOOGLE LOGIN -->
-
 <div id="loginOverlay" class="login-overlay">
 
   <div class="login-box">
 
-```
-<div class="login-logo">
-  MOL <span>L5IBRA</span>
-</div>
+    <div class="login-logo">
+      MOL <span>L5IBRA</span>
+    </div>
 
-<h2>Welcome</h2>
+    <h2>Welcome</h2>
 
-<p class="login-description">
-  Sign in with your Google account to continue.
-</p>
+    <p class="login-description">
+      Sign in with your Google account to continue.
+    </p>
 
-<button id="googleLoginBtn" class="login-btn" type="button">
-  Continue with Google
-</button>
+    <button id="googleLoginBtn" class="login-btn" type="button">
+      Continue with Google
+    </button>
 
-<p id="loginMessage" class="login-message"></p>
-```
+    <p id="loginMessage" class="login-message"></p>
 
   </div>
 
@@ -155,142 +147,127 @@
 <main>
 
   <!-- HERO -->
-
   <section id="home" class="hero">
 
-```
-<div class="hero-content">
+    <div class="hero-content">
 
-  <p class="eyebrow">
-    FOOTBALL • WISDOM • STORIES
-  </p>
+      <p class="eyebrow">
+        FOOTBALL • WISDOM • STORIES
+      </p>
 
-  <h1>
-    THE GAME.<br>
-    <span>THE STORIES.</span><br>
-    THE LEGACY.
-  </h1>
+      <h1>
+        THE GAME.<br>
+        <span>THE STORIES.</span><br>
+        THE LEGACY.
+      </h1>
 
-  <p class="lead">
-    Football stories, legendary players and words that stay with you.
-  </p>
+      <p class="lead">
+        Football stories, legendary players and words that stay with you.
+      </p>
 
-  <a class="cta" href="#football">
-    Explore the game →
-  </a>
+      <a class="cta" href="#football">
+        Explore the game →
+      </a>
 
-</div>
+    </div>
 
-<div class="ball">
-  ⚽
-</div>
-```
+    <div class="ball">
+      ⚽
+    </div>
 
   </section>
 
   <!-- FOOTBALL -->
-
   <section id="football" class="section">
 
-```
-<div class="section-title">
+    <div class="section-title">
 
-  <p class="eyebrow">
-    LATEST
-  </p>
+      <p class="eyebrow">
+        LATEST
+      </p>
 
-  <h2>
-    Football
-  </h2>
+      <h2>
+        Football
+      </h2>
 
-</div>
+    </div>
 
-<div id="news-grid" class="grid"></div>
-```
+    <div id="news-grid" class="grid"></div>
 
   </section>
 
   <!-- LEGENDS -->
-
   <section id="legends" class="section alt">
 
-```
-<div class="section-title">
+    <div class="section-title">
 
-  <p class="eyebrow">
-    THE GREATS
-  </p>
+      <p class="eyebrow">
+        THE GREATS
+      </p>
 
-  <h2>
-    Legends
-  </h2>
+      <h2>
+        Legends
+      </h2>
 
-</div>
+    </div>
 
-<div id="legends-grid" class="grid"></div>
-```
+    <div id="legends-grid" class="grid"></div>
 
   </section>
 
   <!-- VIDEOS -->
-
   <section id="videos" class="section">
 
-```
-<div class="section-title">
+    <div class="section-title">
 
-  <p class="eyebrow">
-    WATCH
-  </p>
+      <p class="eyebrow">
+        WATCH
+      </p>
 
-  <h2>
-    Videos
-  </h2>
+      <h2>
+        Videos
+      </h2>
 
-</div>
+    </div>
 
-<div class="video-card">
+    <div class="video-card">
 
-  <div class="play">
-    ▶
-  </div>
+      <div class="play">
+        ▶
+      </div>
 
-  <div>
+      <div>
 
-    <h3>
-      Football stories coming soon
-    </h3>
+        <h3>
+          Football stories coming soon
+        </h3>
 
-    <p>
-      Add your videos from the Admin Panel.
-    </p>
+        <p>
+          Add your videos from the Admin Panel.
+        </p>
 
-  </div>
+      </div>
 
-</div>
-```
+    </div>
 
   </section>
 
   <!-- STORE -->
-
   <section id="store" class="section alt">
 
-```
-<div class="section-title">
+    <div class="section-title">
 
-  <p class="eyebrow">
-    SHOP
-  </p>
+      <p class="eyebrow">
+        SHOP
+      </p>
 
-  <h2>
-    Store
-  </h2>
+      <h2>
+        Store
+      </h2>
 
-</div>
+    </div>
 
-<div id="store-grid" class="grid"></div>
-```
+    <div id="store-grid" class="grid"></div>
 
   </section>
 
@@ -308,8 +285,8 @@
 
 </footer>
 
+<!-- IMPORTANT: config first, script second -->
 <script src="config.js"></script>
-
 <script src="script.js"></script>
 
 </body>
