@@ -1,5 +1,10 @@
 /* =====================================================
-MOL L5IBRA - Google Login + Profile + Supabase
+MOL L5IBRA - script.js
+GOOGLE LOGIN + PROFILE + SUPABASE CONTENT
+===================================================== */
+
+/* =====================================================
+DEMO CONTENT
 ===================================================== */
 
 const demoNews = [
@@ -48,6 +53,10 @@ price: "—"
 }
 ];
 
+/* =====================================================
+HTML SECURITY
+===================================================== */
+
 function escapeHTML(value) {
 return String(value ?? "")
 .replace(/&/g, "&")
@@ -57,7 +66,12 @@ return String(value ?? "")
 .replace(/'/g, "'");
 }
 
+/* =====================================================
+CARDS
+===================================================== */
+
 function cards(items, type) {
+
 return items.map(item => ` <article class="card">
 
 ```
@@ -85,22 +99,34 @@ return items.map(item => ` <article class="card">
 `).join("");
 }
 
+/* =====================================================
+DEMO RENDER
+===================================================== */
+
 function renderDemo() {
 
-const newsGrid = document.querySelector("#news-grid");
-const legendsGrid = document.querySelector("#legends-grid");
-const storeGrid = document.querySelector("#store-grid");
+const newsGrid =
+document.querySelector("#news-grid");
+
+const legendsGrid =
+document.querySelector("#legends-grid");
+
+const storeGrid =
+document.querySelector("#store-grid");
 
 if (newsGrid) {
-newsGrid.innerHTML = cards(demoNews, "NEWS");
+newsGrid.innerHTML =
+cards(demoNews, "NEWS");
 }
 
 if (legendsGrid) {
-legendsGrid.innerHTML = cards(demoLegends, "LEGEND");
+legendsGrid.innerHTML =
+cards(demoLegends, "LEGEND");
 }
 
 if (storeGrid) {
-storeGrid.innerHTML = cards(demoStore, "STORE");
+storeGrid.innerHTML =
+cards(demoStore, "STORE");
 }
 }
 
@@ -118,8 +144,15 @@ if (
 !window.SUPABASE_URL ||
 !window.SUPABASE_ANON_KEY
 ) {
-console.error("Supabase configuration is missing.");
+
+```
+console.error(
+  "Supabase configuration is missing."
+);
+
 return null;
+```
+
 }
 
 if (supabaseClient) {
@@ -129,14 +162,18 @@ return supabaseClient;
 try {
 
 ```
-const { createClient } = await import(
-  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
-);
+const { createClient } =
+  await import(
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+  );
 
-supabaseClient = createClient(
-  window.SUPABASE_URL,
-  window.SUPABASE_ANON_KEY
-);
+
+supabaseClient =
+  createClient(
+    window.SUPABASE_URL,
+    window.SUPABASE_ANON_KEY
+  );
+
 
 return supabaseClient;
 ```
@@ -161,37 +198,61 @@ LOAD CONTENT
 
 async function loadSupabaseContent() {
 
-const supabase = await initSupabase();
+const supabase =
+await initSupabase();
 
 if (!supabase) return;
 
 try {
 
 ```
-const { data, error } = await supabase
-  .from("content")
-  .select("*")
-  .order("created_at", {
-    ascending: false
-  });
+const {
+  data,
+  error
+} =
+  await supabase
+    .from("content")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
 
 if (error) {
-  console.error("Content loading error:", error);
+
+  console.error(
+    "Content loading error:",
+    error
+  );
+
   return;
 }
+
 
 if (!data || data.length === 0) {
   return;
 }
 
+
 const news =
-  data.filter(item => item.type === "news");
+  data.filter(
+    item => item.type === "news"
+  );
+
 
 const legends =
-  data.filter(item => item.type === "legend");
+  data.filter(
+    item => item.type === "legend"
+  );
+
 
 const products =
-  data.filter(item => item.type === "product");
+  data.filter(
+    item => item.type === "product"
+  );
 
 
 const newsGrid =
@@ -205,29 +266,37 @@ const storeGrid =
 
 
 if (news.length && newsGrid) {
-  newsGrid.innerHTML = cards(news, "NEWS");
+  newsGrid.innerHTML =
+    cards(news, "NEWS");
 }
+
 
 if (legends.length && legendsGrid) {
-  legendsGrid.innerHTML = cards(legends, "LEGEND");
+  legendsGrid.innerHTML =
+    cards(legends, "LEGEND");
 }
 
+
 if (products.length && storeGrid) {
-  storeGrid.innerHTML = cards(products, "STORE");
+  storeGrid.innerHTML =
+    cards(products, "STORE");
 }
 ```
 
 } catch (error) {
 
 ```
-console.error("Supabase content error:", error);
+console.error(
+  "Supabase content error:",
+  error
+);
 ```
 
 }
 }
 
 /* =====================================================
-LOGIN
+LOGIN ELEMENTS
 ===================================================== */
 
 const loginOverlay =
@@ -238,123 +307,6 @@ document.querySelector("#googleLoginBtn");
 
 const loginMessage =
 document.querySelector("#loginMessage");
-
-function showLoginMessage(message) {
-
-if (loginMessage) {
-loginMessage.textContent = message || "";
-}
-}
-
-function showLogin() {
-
-if (!loginOverlay) return;
-
-loginOverlay.classList.remove("hidden");
-
-document.body.style.overflow = "hidden";
-}
-
-function hideLogin() {
-
-if (!loginOverlay) return;
-
-loginOverlay.classList.add("hidden");
-
-document.body.style.overflow = "";
-}
-
-/* =====================================================
-GOOGLE LOGIN
-===================================================== */
-
-async function loginWithGoogle() {
-
-const supabase = await initSupabase();
-
-if (!supabase) {
-
-```
-showLoginMessage(
-  "Supabase is not connected."
-);
-
-return;
-```
-
-}
-
-if (googleLoginBtn) {
-
-```
-googleLoginBtn.disabled = true;
-googleLoginBtn.textContent = "Connecting...";
-```
-
-}
-
-showLoginMessage("");
-
-try {
-
-```
-const { error } =
-  await supabase.auth.signInWithOAuth({
-
-    provider: "google",
-
-    options: {
-      redirectTo: window.location.origin + window.location.pathname
-    }
-
-  });
-
-
-if (error) {
-
-  console.error(
-    "Google login error:",
-    error
-  );
-
-  showLoginMessage(
-    error.message
-  );
-
-  if (googleLoginBtn) {
-    googleLoginBtn.disabled = false;
-    googleLoginBtn.textContent =
-      "Continue with Google";
-  }
-}
-```
-
-} catch (error) {
-
-```
-console.error(error);
-
-showLoginMessage(
-  "Could not connect to Google."
-);
-
-if (googleLoginBtn) {
-  googleLoginBtn.disabled = false;
-  googleLoginBtn.textContent =
-    "Continue with Google";
-}
-```
-
-}
-}
-
-if (googleLoginBtn) {
-
-googleLoginBtn.addEventListener(
-"click",
-loginWithGoogle
-);
-}
 
 /* =====================================================
 PROFILE ELEMENTS
@@ -412,6 +364,152 @@ const logoutBtn =
 document.querySelector("#logoutBtn");
 
 /* =====================================================
+MESSAGES
+===================================================== */
+
+function showLoginMessage(message) {
+
+if (loginMessage) {
+loginMessage.textContent =
+message || "";
+}
+}
+
+function showProfileMessage(message) {
+
+if (profileMessage) {
+profileMessage.textContent =
+message || "";
+}
+}
+
+/* =====================================================
+LOGIN SHOW / HIDE
+===================================================== */
+
+function showLogin() {
+
+if (!loginOverlay) return;
+
+loginOverlay.classList.remove("hidden");
+
+document.body.style.overflow =
+"hidden";
+}
+
+function hideLogin() {
+
+if (!loginOverlay) return;
+
+loginOverlay.classList.add("hidden");
+
+document.body.style.overflow =
+"";
+}
+
+/* =====================================================
+GOOGLE LOGIN
+===================================================== */
+
+async function loginWithGoogle() {
+
+const supabase =
+await initSupabase();
+
+if (!supabase) {
+
+```
+showLoginMessage(
+  "Supabase is not connected."
+);
+
+return;
+```
+
+}
+
+if (googleLoginBtn) {
+
+```
+googleLoginBtn.disabled = true;
+
+googleLoginBtn.textContent =
+  "Connecting...";
+```
+
+}
+
+showLoginMessage("");
+
+try {
+
+```
+const {
+  error
+} =
+  await supabase.auth.signInWithOAuth({
+
+    provider: "google",
+
+    options: {
+
+      redirectTo:
+        window.location.origin +
+        window.location.pathname
+
+    }
+
+  });
+
+
+if (error) {
+
+  console.error(
+    "Google login error:",
+    error
+  );
+
+  showLoginMessage(
+    error.message
+  );
+
+}
+```
+
+} catch (error) {
+
+```
+console.error(error);
+
+showLoginMessage(
+  "Could not connect to Google."
+);
+```
+
+} finally {
+
+```
+if (googleLoginBtn) {
+
+  googleLoginBtn.disabled = false;
+
+  googleLoginBtn.textContent =
+    "Continue with Google";
+}
+```
+
+}
+}
+
+if (googleLoginBtn) {
+
+googleLoginBtn.addEventListener(
+"click",
+loginWithGoogle
+);
+}
+
+/* =====================================================
 PROFILE SIDEBAR
 ===================================================== */
 
@@ -422,30 +520,51 @@ if (!profileSidebar) return;
 profileSidebar.classList.add("active");
 
 if (profileOverlay) {
-profileOverlay.classList.add("active");
+
+```
+profileOverlay.classList.add(
+  "active"
+);
+```
+
 }
 
-document.body.style.overflow = "hidden";
+document.body.style.overflow =
+"hidden";
 }
 
 function closeProfileSidebar() {
 
 if (!profileSidebar) return;
 
-profileSidebar.classList.remove("active");
+profileSidebar.classList.remove(
+"active"
+);
 
 if (profileOverlay) {
-profileOverlay.classList.remove("active");
+
+```
+profileOverlay.classList.remove(
+  "active"
+);
+```
+
 }
 
-document.body.style.overflow = "";
+document.body.style.overflow =
+"";
 }
 
 if (profileBtn) {
-profileBtn.addEventListener("click", openProfile);
+
+profileBtn.addEventListener(
+"click",
+openProfile
+);
 }
 
 if (closeProfile) {
+
 closeProfile.addEventListener(
 "click",
 closeProfileSidebar
@@ -453,6 +572,7 @@ closeProfileSidebar
 }
 
 if (profileOverlay) {
+
 profileOverlay.addEventListener(
 "click",
 closeProfileSidebar
@@ -463,7 +583,9 @@ closeProfileSidebar
 CREATE / UPDATE PROFILE
 ===================================================== */
 
-async function createOrUpdateProfile(user) {
+async function createOrUpdateProfile(
+user
+) {
 
 if (!supabaseClient || !user) {
 return;
@@ -480,15 +602,27 @@ user.user_metadata?.picture ||
 null;
 
 const profileData = {
+
+```
 id: user.id,
+
 full_name: googleName
+```
+
 };
 
 if (googleAvatar) {
-profileData.avatar_url = googleAvatar;
+
+```
+profileData.avatar_url =
+  googleAvatar;
+```
+
 }
 
-const { error } =
+const {
+error
+} =
 await supabaseClient
 .from("profiles")
 .upsert(
@@ -511,7 +645,7 @@ console.error(
 }
 
 /* =====================================================
-LOAD PROFILE
+LOAD USER PROFILE
 ===================================================== */
 
 async function loadUserProfile() {
@@ -537,8 +671,6 @@ return;
 ```
 
 }
-
-await createOrUpdateProfile(user);
 
 const {
 data: profile,
@@ -584,7 +716,7 @@ avatar
 }
 
 /* =====================================================
-PROFILE UI
+UPDATE PROFILE UI
 ===================================================== */
 
 function updateProfileUI(
@@ -594,23 +726,28 @@ avatar
 ) {
 
 if (profileName) {
-profileName.textContent = name;
+profileName.textContent =
+name;
 }
 
 if (profileEmail) {
-profileEmail.textContent = email;
+profileEmail.textContent =
+email;
 }
 
 if (infoName) {
-infoName.textContent = name;
+infoName.textContent =
+name;
 }
 
 if (infoEmail) {
-infoEmail.textContent = email;
+infoEmail.textContent =
+email;
 }
 
 if (newName) {
-newName.value = name;
+newName.value =
+name;
 }
 
 if (
@@ -619,12 +756,17 @@ profileAvatar
 ) {
 
 ```
-profileAvatar.src = avatar;
+profileAvatar.src =
+  avatar;
 
-profileAvatar.style.display = "block";
+profileAvatar.style.display =
+  "block";
+
 
 if (defaultAvatar) {
-  defaultAvatar.style.display = "none";
+
+  defaultAvatar.style.display =
+    "none";
 }
 ```
 
@@ -632,12 +774,20 @@ if (defaultAvatar) {
 
 ```
 if (profileAvatar) {
-  profileAvatar.removeAttribute("src");
-  profileAvatar.style.display = "none";
+
+  profileAvatar.removeAttribute(
+    "src"
+  );
+
+  profileAvatar.style.display =
+    "none";
 }
 
+
 if (defaultAvatar) {
-  defaultAvatar.style.display = "grid";
+
+  defaultAvatar.style.display =
+    "grid";
 }
 ```
 
@@ -657,13 +807,21 @@ editProfileBtn.addEventListener(
 ```
   if (!editProfileBox) return;
 
-  editProfileBox.classList.toggle("active");
+
+  editProfileBox.classList.toggle(
+    "active"
+  );
+
 
   if (
-    editProfileBox.classList.contains("active")
+    editProfileBox.classList.contains(
+      "active"
+    )
   ) {
+
     newName?.focus();
   }
+
 }
 ```
 
@@ -718,8 +876,11 @@ return;
 if (saveProfileBtn) {
 
 ```
-saveProfileBtn.disabled = true;
-saveProfileBtn.textContent = "Saving...";
+saveProfileBtn.disabled =
+  true;
+
+saveProfileBtn.textContent =
+  "Saving...";
 ```
 
 }
@@ -739,7 +900,11 @@ if (
     avatarInput.files[0];
 
 
-  if (!file.type.startsWith("image/")) {
+  if (
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
 
     showProfileMessage(
       "Please select an image."
@@ -749,7 +914,10 @@ if (
   }
 
 
-  if (file.size > 2 * 1024 * 1024) {
+  if (
+    file.size >
+    2 * 1024 * 1024
+  ) {
 
     showProfileMessage(
       "Image must be smaller than 2MB."
@@ -781,7 +949,8 @@ if (
         file,
         {
           upsert: true,
-          contentType: file.type
+          contentType:
+            file.type
         }
       );
 
@@ -807,7 +976,9 @@ if (
     supabase
       .storage
       .from("avatars")
-      .getPublicUrl(filePath);
+      .getPublicUrl(
+        filePath
+      );
 
 
   avatarUrl =
@@ -816,13 +987,19 @@ if (
 
 
 const updateData = {
+
   full_name: name,
-  updated_at: new Date().toISOString()
+
+  updated_at:
+    new Date().toISOString()
+
 };
 
 
 if (avatarUrl) {
-  updateData.avatar_url = avatarUrl;
+
+  updateData.avatar_url =
+    avatarUrl;
 }
 
 
@@ -831,8 +1008,13 @@ const {
 } =
   await supabase
     .from("profiles")
-    .update(updateData)
-    .eq("id", user.id);
+    .update(
+      updateData
+    )
+    .eq(
+      "id",
+      user.id
+    );
 
 
 if (error) {
@@ -878,7 +1060,9 @@ showProfileMessage(
 ```
 if (saveProfileBtn) {
 
-  saveProfileBtn.disabled = false;
+  saveProfileBtn.disabled =
+    false;
+
   saveProfileBtn.textContent =
     "Save changes";
 }
@@ -909,10 +1093,13 @@ async () => {
   const supabase =
     await initSupabase();
 
+
   if (!supabase) return;
 
 
-  logoutBtn.disabled = true;
+  logoutBtn.disabled =
+    true;
+
   logoutBtn.textContent =
     "Logging out...";
 
@@ -927,7 +1114,9 @@ async () => {
 
     console.error(error);
 
-    logoutBtn.disabled = false;
+    logoutBtn.disabled =
+      false;
+
     logoutBtn.textContent =
       "Logout";
 
@@ -937,7 +1126,8 @@ async () => {
 
   closeProfileSidebar();
 
-  location.reload();
+  showLogin();
+
 }
 ```
 
@@ -967,6 +1157,10 @@ if (session?.user) {
 ```
 hideLogin();
 
+await createOrUpdateProfile(
+  session.user
+);
+
 await loadUserProfile();
 ```
 
@@ -979,7 +1173,10 @@ showLogin();
 }
 
 supabase.auth.onAuthStateChange(
-async (event, session) => {
+async (
+event,
+session
+) => {
 
 ```
   if (
@@ -988,6 +1185,10 @@ async (event, session) => {
   ) {
 
     hideLogin();
+
+    await createOrUpdateProfile(
+      session.user
+    );
 
     await loadUserProfile();
   }
@@ -1011,4 +1212,5 @@ START
 ===================================================== */
 
 loadSupabaseContent();
+
 checkLogin();
