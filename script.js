@@ -1,7 +1,11 @@
-/* =====================================================
-   MOL L5IBRA - script.js
-   GOOGLE LOGIN + PROFILE + SUPABASE CONTENT
+    title: "Welcome to MOL L5IBRA/* =====================================================
+   MOL L5IBRA
+   GOOGLE LOGIN
+   PROFILE
+   SUPABASE CONTENT
+   AVATAR STORAGE
 ===================================================== */
+
 
 /* =====================================================
    DEMO CONTENT
@@ -25,6 +29,7 @@ const demoNews = [
   }
 ];
 
+
 const demoLegends = [
   {
     tag: "LEGEND",
@@ -37,6 +42,7 @@ const demoLegends = [
     text: "Add legendary players from the Admin Panel."
   }
 ];
+
 
 const demoStore = [
   {
@@ -53,26 +59,33 @@ const demoStore = [
   }
 ];
 
+
 /* =====================================================
    HTML SECURITY
 ===================================================== */
 
 function escapeHTML(value) {
+
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+
 }
+
 
 /* =====================================================
    CARDS
 ===================================================== */
 
 function cards(items, type) {
+
   return items.map(item => `
+
     <article class="card">
+
       <span class="tag">
         ${escapeHTML(item.tag || type)}
       </span>
@@ -90,33 +103,52 @@ function cards(items, type) {
           ? `<div class="price">${escapeHTML(item.price)}</div>`
           : ""
       }
+
     </article>
+
   `).join("");
+
 }
+
 
 /* =====================================================
    DEMO CONTENT
 ===================================================== */
 
 function renderDemo() {
-  const newsGrid = document.querySelector("#news-grid");
-  const legendsGrid = document.querySelector("#legends-grid");
-  const storeGrid = document.querySelector("#store-grid");
+
+  const newsGrid =
+    document.querySelector("#news-grid");
+
+  const legendsGrid =
+    document.querySelector("#legends-grid");
+
+  const storeGrid =
+    document.querySelector("#store-grid");
+
 
   if (newsGrid) {
-    newsGrid.innerHTML = cards(demoNews, "NEWS");
+    newsGrid.innerHTML =
+      cards(demoNews, "NEWS");
   }
+
 
   if (legendsGrid) {
-    legendsGrid.innerHTML = cards(demoLegends, "LEGEND");
+    legendsGrid.innerHTML =
+      cards(demoLegends, "LEGEND");
   }
+
 
   if (storeGrid) {
-    storeGrid.innerHTML = cards(demoStore, "STORE");
+    storeGrid.innerHTML =
+      cards(demoStore, "STORE");
   }
+
 }
 
+
 renderDemo();
+
 
 /* =====================================================
    SUPABASE
@@ -124,323 +156,702 @@ renderDemo();
 
 let supabaseClient = null;
 
+
 async function initSupabase() {
-  if (!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) {
-    console.error("Supabase configuration is missing.");
+
+  if (
+    !window.SUPABASE_URL ||
+    !window.SUPABASE_ANON_KEY
+  ) {
+
+    console.error(
+      "Supabase configuration is missing."
+    );
+
     return null;
   }
+
 
   if (supabaseClient) {
     return supabaseClient;
   }
 
+
   try {
+
     if (window.supabase) {
-      supabaseClient = window.supabase.createClient(
-        window.SUPABASE_URL,
-        window.SUPABASE_ANON_KEY
-      );
+
+      supabaseClient =
+        window.supabase.createClient(
+          window.SUPABASE_URL,
+          window.SUPABASE_ANON_KEY
+        );
 
       return supabaseClient;
     }
 
-    const module = await import(
-      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
-    );
 
-    supabaseClient = module.createClient(
-      window.SUPABASE_URL,
-      window.SUPABASE_ANON_KEY
-    );
+    const module =
+      await import(
+        "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+      );
+
+
+    supabaseClient =
+      module.createClient(
+        window.SUPABASE_URL,
+        window.SUPABASE_ANON_KEY
+      );
+
 
     return supabaseClient;
 
   } catch (error) {
-    console.error("Could not initialize Supabase:", error);
+
+    console.error(
+      "Could not initialize Supabase:",
+      error
+    );
+
     return null;
   }
+
 }
+
 
 /* =====================================================
    LOAD SUPABASE CONTENT
 ===================================================== */
 
 async function loadSupabaseContent() {
-  const supabase = await initSupabase();
 
-  if (!supabase) return;
+  const supabase =
+    await initSupabase();
+
+
+  if (!supabase) {
+    return;
+  }
+
 
   try {
-    const { data, error } = await supabase
+
+    const {
+      data,
+      error
+    } = await supabase
       .from("content")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
 
     if (error) {
-      console.error("Content loading error:", error);
+
+      console.error(
+        "Content loading error:",
+        error
+      );
+
       return;
     }
+
 
     if (!data || data.length === 0) {
       return;
     }
 
-    const news = data.filter(item => item.type === "news");
-    const legends = data.filter(item => item.type === "legend");
-    const products = data.filter(item => item.type === "product");
 
-    const newsGrid = document.querySelector("#news-grid");
-    const legendsGrid = document.querySelector("#legends-grid");
-    const storeGrid = document.querySelector("#store-grid");
+    const news =
+      data.filter(
+        item => item.type === "news"
+      );
 
-    if (news.length && newsGrid) {
-      newsGrid.innerHTML = cards(news, "NEWS");
+
+    const legends =
+      data.filter(
+        item => item.type === "legend"
+      );
+
+
+    const products =
+      data.filter(
+        item => item.type === "product"
+      );
+
+
+    const newsGrid =
+      document.querySelector(
+        "#news-grid"
+      );
+
+
+    const legendsGrid =
+      document.querySelector(
+        "#legends-grid"
+      );
+
+
+    const storeGrid =
+      document.querySelector(
+        "#store-grid"
+      );
+
+
+    if (
+      news.length &&
+      newsGrid
+    ) {
+
+      newsGrid.innerHTML =
+        cards(news, "NEWS");
     }
 
-    if (legends.length && legendsGrid) {
-      legendsGrid.innerHTML = cards(legends, "LEGEND");
+
+    if (
+      legends.length &&
+      legendsGrid
+    ) {
+
+      legendsGrid.innerHTML =
+        cards(
+          legends,
+          "LEGEND"
+        );
     }
 
-    if (products.length && storeGrid) {
-      storeGrid.innerHTML = cards(products, "STORE");
+
+    if (
+      products.length &&
+      storeGrid
+    ) {
+
+      storeGrid.innerHTML =
+        cards(
+          products,
+          "STORE"
+        );
     }
+
 
   } catch (error) {
-    console.error("Supabase content error:", error);
+
+    console.error(
+      "Supabase content error:",
+      error
+    );
+
   }
+
 }
+
 
 /* =====================================================
    LOGIN ELEMENTS
 ===================================================== */
 
-const loginOverlay = document.querySelector("#loginOverlay");
-const googleLoginBtn = document.querySelector("#googleLoginBtn");
-const loginMessage = document.querySelector("#loginMessage");
+const loginOverlay =
+  document.querySelector(
+    "#loginOverlay"
+  );
+
+
+const googleLoginBtn =
+  document.querySelector(
+    "#googleLoginBtn"
+  );
+
+
+const loginMessage =
+  document.querySelector(
+    "#loginMessage"
+  );
+
 
 /* =====================================================
    PROFILE ELEMENTS
 ===================================================== */
 
-const profileBtn = document.querySelector("#profileBtn");
-const profileSidebar = document.querySelector("#profileSidebar");
-const profileOverlay = document.querySelector("#profileOverlay");
-const closeProfile = document.querySelector("#closeProfile");
+const profileBtn =
+  document.querySelector(
+    "#profileBtn"
+  );
 
-const profileAvatar = document.querySelector("#profileAvatar");
-const defaultAvatar = document.querySelector("#defaultAvatar");
 
-const profileName = document.querySelector("#profileName");
-const profileEmail = document.querySelector("#profileEmail");
+const profileSidebar =
+  document.querySelector(
+    "#profileSidebar"
+  );
 
-const infoName = document.querySelector("#infoName");
-const infoEmail = document.querySelector("#infoEmail");
 
-const editProfileBtn = document.querySelector("#editProfileBtn");
-const editProfileBox = document.querySelector("#editProfileBox");
+const profileOverlay =
+  document.querySelector(
+    "#profileOverlay"
+  );
 
-const newName = document.querySelector("#newName");
-const avatarInput = document.querySelector("#avatarInput");
 
-const saveProfileBtn = document.querySelector("#saveProfileBtn");
-const profileMessage = document.querySelector("#profileMessage");
+const closeProfile =
+  document.querySelector(
+    "#closeProfile"
+  );
 
-const logoutBtn = document.querySelector("#logoutBtn");
+
+const profileAvatar =
+  document.querySelector(
+    "#profileAvatar"
+  );
+
+
+const defaultAvatar =
+  document.querySelector(
+    "#defaultAvatar"
+  );
+
+
+const profileName =
+  document.querySelector(
+    "#profileName"
+  );
+
+
+const profileEmail =
+  document.querySelector(
+    "#profileEmail"
+  );
+
+
+const infoName =
+  document.querySelector(
+    "#infoName"
+  );
+
+
+const infoEmail =
+  document.querySelector(
+    "#infoEmail"
+  );
+
+
+const editProfileBtn =
+  document.querySelector(
+    "#editProfileBtn"
+  );
+
+
+const editProfileBox =
+  document.querySelector(
+    "#editProfileBox"
+  );
+
+
+const newName =
+  document.querySelector(
+    "#newName"
+  );
+
+
+const avatarInput =
+  document.querySelector(
+    "#avatarInput"
+  );
+
+
+const saveProfileBtn =
+  document.querySelector(
+    "#saveProfileBtn"
+  );
+
+
+const profileMessage =
+  document.querySelector(
+    "#profileMessage"
+  );
+
+
+const logoutBtn =
+  document.querySelector(
+    "#logoutBtn"
+  );
+
 
 /* =====================================================
-   LOGIN MESSAGE
+   MESSAGES
 ===================================================== */
 
 function showLoginMessage(message) {
+
   if (loginMessage) {
-    loginMessage.textContent = message || "";
+
+    loginMessage.textContent =
+      message || "";
+
   }
+
 }
+
 
 function showProfileMessage(message) {
+
   if (profileMessage) {
-    profileMessage.textContent = message || "";
+
+    profileMessage.textContent =
+      message || "";
+
   }
+
 }
 
+
 /* =====================================================
-   LOGIN SHOW / HIDE
+   LOGIN SHOW
 ===================================================== */
 
 function showLogin() {
-  if (!loginOverlay) return;
 
-  loginOverlay.classList.remove("hidden");
-  document.body.style.overflow = "hidden";
+  if (!loginOverlay) {
+    return;
+  }
+
+
+  loginOverlay.classList.remove(
+    "hidden"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
 }
+
+
+/* =====================================================
+   LOGIN HIDE
+===================================================== */
 
 function hideLogin() {
-  if (!loginOverlay) return;
 
-  loginOverlay.classList.add("hidden");
-  document.body.style.overflow = "";
+  if (!loginOverlay) {
+    return;
+  }
+
+
+  loginOverlay.classList.add(
+    "hidden"
+  );
+
+
+  document.body.style.overflow =
+    "";
+
 }
+
 
 /* =====================================================
    GOOGLE LOGIN
 ===================================================== */
 
 async function loginWithGoogle() {
-  const supabase = await initSupabase();
+
+  const supabase =
+    await initSupabase();
+
 
   if (!supabase) {
-    showLoginMessage("Supabase is not connected.");
+
+    showLoginMessage(
+      "Supabase is not connected."
+    );
+
     return;
   }
 
+
   if (googleLoginBtn) {
-    googleLoginBtn.disabled = true;
-    googleLoginBtn.textContent = "Connecting...";
+
+    googleLoginBtn.disabled =
+      true;
+
+    googleLoginBtn.textContent =
+      "Connecting...";
+
   }
+
 
   showLoginMessage("");
 
-  try {
-    const redirectTo =
-      window.location.origin + window.location.pathname;
 
-    const { error } = await supabase.auth.signInWithOAuth({
+  try {
+
+    const redirectTo =
+      window.location.origin +
+      window.location.pathname;
+
+
+    const {
+      error
+    } = await supabase.auth.signInWithOAuth({
+
       provider: "google",
 
       options: {
         redirectTo: redirectTo
       }
+
     });
 
-    if (error) {
-      console.error("Google login error:", error);
 
-      showLoginMessage(error.message);
+    if (error) {
+
+      console.error(
+        "Google login error:",
+        error
+      );
+
+
+      showLoginMessage(
+        error.message
+      );
+
 
       if (googleLoginBtn) {
-        googleLoginBtn.disabled = false;
-        googleLoginBtn.textContent = "Continue with Google";
+
+        googleLoginBtn.disabled =
+          false;
+
+        googleLoginBtn.textContent =
+          "Continue with Google";
+
       }
+
     }
 
   } catch (error) {
-    console.error("Google login exception:", error);
 
-    showLoginMessage(
-      error.message || "Could not connect to Google."
+    console.error(
+      "Google login exception:",
+      error
     );
 
+
+    showLoginMessage(
+      error.message ||
+      "Could not connect to Google."
+    );
+
+
     if (googleLoginBtn) {
-      googleLoginBtn.disabled = false;
-      googleLoginBtn.textContent = "Continue with Google";
+
+      googleLoginBtn.disabled =
+        false;
+
+      googleLoginBtn.textContent =
+        "Continue with Google";
+
     }
+
   }
+
 }
 
+
 if (googleLoginBtn) {
-  googleLoginBtn.addEventListener("click", loginWithGoogle);
+
+  googleLoginBtn.addEventListener(
+    "click",
+    loginWithGoogle
+  );
+
 }
+
 
 /* =====================================================
    PROFILE SIDEBAR
 ===================================================== */
 
 function openProfile() {
-  if (!profileSidebar) return;
 
-  profileSidebar.classList.add("active");
-
-  if (profileOverlay) {
-    profileOverlay.classList.add("active");
+  if (!profileSidebar) {
+    return;
   }
 
-  document.body.style.overflow = "hidden";
+
+  profileSidebar.classList.add(
+    "active"
+  );
+
+
+  if (profileOverlay) {
+
+    profileOverlay.classList.add(
+      "active"
+    );
+
+  }
+
+
+  document.body.style.overflow =
+    "hidden";
+
 }
+
 
 function closeProfileSidebar() {
-  if (!profileSidebar) return;
 
-  profileSidebar.classList.remove("active");
-
-  if (profileOverlay) {
-    profileOverlay.classList.remove("active");
+  if (!profileSidebar) {
+    return;
   }
 
-  document.body.style.overflow = "";
+
+  profileSidebar.classList.remove(
+    "active"
+  );
+
+
+  if (profileOverlay) {
+
+    profileOverlay.classList.remove(
+      "active"
+    );
+
+  }
+
+
+  document.body.style.overflow =
+    "";
+
 }
+
 
 if (profileBtn) {
-  profileBtn.addEventListener("click", openProfile);
+
+  profileBtn.addEventListener(
+    "click",
+    openProfile
+  );
+
 }
+
 
 if (closeProfile) {
-  closeProfile.addEventListener("click", closeProfileSidebar);
+
+  closeProfile.addEventListener(
+    "click",
+    closeProfileSidebar
+  );
+
 }
 
+
 if (profileOverlay) {
+
   profileOverlay.addEventListener(
     "click",
     closeProfileSidebar
   );
+
 }
+
 
 /* =====================================================
    CREATE / UPDATE PROFILE
 ===================================================== */
 
 async function createOrUpdateProfile(user) {
-  if (!supabaseClient || !user) return;
+
+  if (
+    !supabaseClient ||
+    !user
+  ) {
+    return;
+  }
+
 
   const googleName =
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
     "User";
 
+
   const googleAvatar =
     user.user_metadata?.avatar_url ||
     user.user_metadata?.picture ||
     null;
 
+
   const profileData = {
+
     id: user.id,
+
     full_name: googleName
+
   };
 
+
   if (googleAvatar) {
-    profileData.avatar_url = googleAvatar;
+
+    profileData.avatar_url =
+      googleAvatar;
+
   }
 
-  const { error } = await supabaseClient
+
+  const {
+    error
+  } = await supabaseClient
     .from("profiles")
-    .upsert(profileData, {
-      onConflict: "id"
-    });
+    .upsert(
+      profileData,
+      {
+        onConflict: "id"
+      }
+    );
+
 
   if (error) {
+
     console.error(
       "Profile creation error:",
       error
     );
+
   }
+
 }
+
 
 /* =====================================================
    LOAD USER PROFILE
 ===================================================== */
 
 async function loadUserProfile() {
-  const supabase = await initSupabase();
 
-  if (!supabase) return;
+  const supabase =
+    await initSupabase();
 
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
 
-  if (!user) {
-    showLogin();
+  if (!supabase) {
     return;
   }
+
+
+  const {
+    data: {
+      user
+    }
+  } = await supabase.auth.getUser();
+
+
+  if (!user) {
+
+    showLogin();
+
+    return;
+  }
+
 
   const {
     data: profile,
@@ -448,15 +859,22 @@ async function loadUserProfile() {
   } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", user.id)
+    .eq(
+      "id",
+      user.id
+    )
     .maybeSingle();
 
+
   if (error) {
+
     console.error(
       "Profile loading error:",
       error
     );
+
   }
+
 
   const name =
     profile?.full_name ||
@@ -464,7 +882,10 @@ async function loadUserProfile() {
     user.user_metadata?.name ||
     "User";
 
-  const email = user.email || "";
+
+  const email =
+    user.email || "";
+
 
   const avatar =
     profile?.avatar_url ||
@@ -472,12 +893,15 @@ async function loadUserProfile() {
     user.user_metadata?.picture ||
     "";
 
+
   updateProfileUI(
     name,
     email,
     avatar
   );
+
 }
+
 
 /* =====================================================
    UPDATE PROFILE UI
@@ -488,46 +912,93 @@ function updateProfileUI(
   email,
   avatar
 ) {
+
   if (profileName) {
-    profileName.textContent = name;
+
+    profileName.textContent =
+      name;
+
   }
+
 
   if (profileEmail) {
-    profileEmail.textContent = email;
+
+    profileEmail.textContent =
+      email;
+
   }
+
 
   if (infoName) {
-    infoName.textContent = name;
+
+    infoName.textContent =
+      name;
+
   }
+
 
   if (infoEmail) {
-    infoEmail.textContent = email;
+
+    infoEmail.textContent =
+      email;
+
   }
+
 
   if (newName) {
-    newName.value = name;
+
+    newName.value =
+      name;
+
   }
 
-  if (avatar && profileAvatar) {
-    profileAvatar.src = avatar;
-    profileAvatar.style.display = "block";
+
+  if (
+    avatar &&
+    profileAvatar
+  ) {
+
+    profileAvatar.src =
+      avatar;
+
+
+    profileAvatar.style.display =
+      "block";
+
 
     if (defaultAvatar) {
-      defaultAvatar.style.display = "none";
+
+      defaultAvatar.style.display =
+        "none";
+
     }
 
   } else {
 
     if (profileAvatar) {
-      profileAvatar.removeAttribute("src");
-      profileAvatar.style.display = "none";
+
+      profileAvatar.removeAttribute(
+        "src"
+      );
+
+
+      profileAvatar.style.display =
+        "none";
+
     }
 
+
     if (defaultAvatar) {
-      defaultAvatar.style.display = "grid";
+
+      defaultAvatar.style.display =
+        "grid";
+
     }
+
   }
+
 }
+
 
 /* =====================================================
    EDIT PROFILE
@@ -539,69 +1010,106 @@ if (editProfileBtn) {
     "click",
     () => {
 
-      if (!editProfileBox) return;
+      if (!editProfileBox) {
+        return;
+      }
+
 
       editProfileBox.classList.toggle(
         "active"
       );
+
 
       if (
         editProfileBox.classList.contains(
           "active"
         )
       ) {
+
         newName?.focus();
+
       }
+
     }
   );
+
 }
+
 
 /* =====================================================
    SAVE PROFILE
+   NAME + AVATAR
 ===================================================== */
 
 async function saveProfile() {
-  const supabase = await initSupabase();
+
+  const supabase =
+    await initSupabase();
+
 
   if (!supabase) {
+
     showProfileMessage(
       "Supabase is not connected."
     );
+
     return;
   }
 
+
   const {
-    data: { user }
+    data: {
+      user
+    },
+    error: userError
   } = await supabase.auth.getUser();
 
-  if (!user) {
+
+  if (
+    userError ||
+    !user
+  ) {
+
     showProfileMessage(
       "Please login first."
     );
+
     return;
   }
+
 
   const name =
     newName?.value.trim() || "";
 
+
   if (!name) {
+
     showProfileMessage(
       "Enter your name."
     );
+
     return;
   }
 
+
   if (saveProfileBtn) {
-    saveProfileBtn.disabled = true;
-    saveProfileBtn.textContent = "Saving...";
+
+    saveProfileBtn.disabled =
+      true;
+
+    saveProfileBtn.textContent =
+      "Saving...";
+
   }
+
 
   try {
 
-    let avatarUrl = "";
+    let avatarUrl = null;
+
 
     /* =================================================
-       IMAGE UPLOAD
+       AVATAR UPLOAD
     ================================================= */
 
     if (
@@ -612,9 +1120,14 @@ async function saveProfile() {
       const file =
         avatarInput.files[0];
 
-      /* Check image */
 
-      if (!file.type.startsWith("image/")) {
+      /* IMAGE CHECK */
+
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
 
         showProfileMessage(
           "Please select an image."
@@ -623,7 +1136,8 @@ async function saveProfile() {
         return;
       }
 
-      /* Max 2MB */
+
+      /* MAX 2MB */
 
       if (
         file.size >
@@ -637,25 +1151,25 @@ async function saveProfile() {
         return;
       }
 
-      /* File extension */
 
-      let extension =
-        file.name
-          .split(".")
-          .pop()
-          .toLowerCase();
+      /* ALLOWED TYPES */
 
-      const allowedExtensions = [
-        "jpg",
-        "jpeg",
-        "png",
-        "webp",
-        "gif"
+      const allowedTypes = [
+
+        "image/jpeg",
+
+        "image/png",
+
+        "image/webp",
+
+        "image/gif"
+
       ];
 
+
       if (
-        !allowedExtensions.includes(
-          extension
+        !allowedTypes.includes(
+          file.type
         )
       ) {
 
@@ -666,17 +1180,31 @@ async function saveProfile() {
         return;
       }
 
-      /* Each user gets their own folder */
+
+      /* FILE EXTENSION */
+
+      const extension =
+        file.name
+          .split(".")
+          .pop()
+          .toLowerCase();
+
+
+      /* USER FOLDER */
 
       const filePath =
         `${user.id}/avatar.${extension}`;
+
 
       console.log(
         "Uploading avatar:",
         filePath
       );
 
-      /* Upload */
+
+      /* =================================================
+         UPLOAD TO SUPABASE STORAGE
+      ================================================= */
 
       const {
         error: uploadError
@@ -693,7 +1221,6 @@ async function saveProfile() {
           }
         );
 
-      /* Show real Supabase error */
 
       if (uploadError) {
 
@@ -702,15 +1229,20 @@ async function saveProfile() {
           uploadError
         );
 
+
         showProfileMessage(
           uploadError.message ||
           "Could not upload the image."
         );
 
+
         return;
       }
 
-      /* Get public URL */
+
+      /* =================================================
+         GET PUBLIC URL
+      ================================================= */
 
       const {
         data: publicData
@@ -721,65 +1253,122 @@ async function saveProfile() {
           filePath
         );
 
+
       avatarUrl =
-        publicData?.publicUrl || "";
+        publicData?.publicUrl ||
+        null;
+
+
+      if (!avatarUrl) {
+
+        showProfileMessage(
+          "Could not create avatar URL."
+        );
+
+        return;
+      }
+
+
+      /*
+        Prevent browser cache
+        from showing old image
+      */
+
+      avatarUrl +=
+        `?t=${Date.now()}`;
+
 
       console.log(
         "Avatar URL:",
         avatarUrl
       );
+
     }
 
+
     /* =================================================
-       UPDATE PROFILE DATABASE
+       UPDATE PROFILES TABLE
     ================================================= */
 
     const updateData = {
+
       full_name: name,
+
       updated_at:
         new Date().toISOString()
+
     };
 
+
     if (avatarUrl) {
+
       updateData.avatar_url =
         avatarUrl;
+
     }
 
+
     const {
-      error
+      error: profileError
     } = await supabase
       .from("profiles")
       .update(updateData)
-      .eq("id", user.id);
+      .eq(
+        "id",
+        user.id
+      );
 
-    if (error) {
+
+    if (profileError) {
 
       console.error(
         "Profile update error:",
-        error
+        profileError
       );
 
+
       showProfileMessage(
-        error.message ||
+        profileError.message ||
         "Could not save your profile."
       );
+
 
       return;
     }
 
-    /* Reload profile */
+
+    /* =================================================
+       UPDATE UI IMMEDIATELY
+    ================================================= */
+
+    updateProfileUI(
+      name,
+      user.email || "",
+      avatarUrl || profileAvatar?.src || ""
+    );
+
+
+    /* =================================================
+       RELOAD FROM DATABASE
+    ================================================= */
 
     await loadUserProfile();
+
 
     showProfileMessage(
       "Profile updated successfully."
     );
 
-    /* Reset file input */
+
+    /* CLEAR FILE */
 
     if (avatarInput) {
-      avatarInput.value = "";
+
+      avatarInput.value =
+        "";
+
     }
+
 
   } catch (error) {
 
@@ -787,6 +1376,7 @@ async function saveProfile() {
       "Profile save error:",
       error
     );
+
 
     showProfileMessage(
       error.message ||
@@ -796,19 +1386,33 @@ async function saveProfile() {
   } finally {
 
     if (saveProfileBtn) {
-      saveProfileBtn.disabled = false;
+
+      saveProfileBtn.disabled =
+        false;
+
       saveProfileBtn.textContent =
         "Save changes";
+
     }
+
   }
+
 }
 
+
+/* =====================================================
+   SAVE BUTTON
+===================================================== */
+
 if (saveProfileBtn) {
+
   saveProfileBtn.addEventListener(
     "click",
     saveProfile
   );
+
 }
+
 
 /* =====================================================
    LOGOUT
@@ -823,36 +1427,63 @@ if (logoutBtn) {
       const supabase =
         await initSupabase();
 
-      if (!supabase) return;
 
-      logoutBtn.disabled = true;
+      if (!supabase) {
+        return;
+      }
+
+
+      logoutBtn.disabled =
+        true;
+
+
       logoutBtn.textContent =
         "Logging out...";
+
 
       const {
         error
       } = await supabase.auth.signOut();
 
+
       if (error) {
 
-        console.error(error);
+        console.error(
+          "Logout error:",
+          error
+        );
 
-        logoutBtn.disabled = false;
+
+        logoutBtn.disabled =
+          false;
+
+
         logoutBtn.textContent =
           "Logout";
+
 
         return;
       }
 
+
       closeProfileSidebar();
+
+
       showLogin();
 
-      logoutBtn.disabled = false;
+
+      logoutBtn.disabled =
+        false;
+
+
       logoutBtn.textContent =
         "Logout";
+
     }
   );
+
 }
+
 
 /* =====================================================
    CHECK LOGIN
@@ -863,26 +1494,44 @@ async function checkLogin() {
   const supabase =
     await initSupabase();
 
-  if (!supabase) return;
+
+  if (!supabase) {
+    return;
+  }
+
 
   const {
-    data: { session }
-  } = await supabase.auth.getSession();
+    data: {
+      session
+    }
+  } =
+    await supabase.auth.getSession();
 
-  if (session?.user) {
+
+  if (
+    session?.user
+  ) {
 
     hideLogin();
+
 
     await createOrUpdateProfile(
       session.user
     );
+
 
     await loadUserProfile();
 
   } else {
 
     showLogin();
+
   }
+
+
+  /* =================================================
+     AUTH STATE CHANGE
+  ================================================= */
 
   supabase.auth.onAuthStateChange(
     async (
@@ -897,26 +1546,35 @@ async function checkLogin() {
 
         hideLogin();
 
+
         await createOrUpdateProfile(
           session.user
         );
 
+
         await loadUserProfile();
+
       }
+
 
       if (
         event === "SIGNED_OUT"
       ) {
 
         showLogin();
+
       }
+
     }
   );
+
 }
 
+
 /* =====================================================
-   START
+   START MOL L5IBRA
 ===================================================== */
 
 loadSupabaseContent();
+
 checkLogin();
