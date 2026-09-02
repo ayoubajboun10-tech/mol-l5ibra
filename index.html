@@ -36,15 +36,31 @@
 
 </header>
 
-<!-- PROFILE OVERLAY -->
+
+<!-- =====================================================
+     PROFILE OVERLAY
+===================================================== -->
+
 <div id="profileOverlay" class="profile-overlay"></div>
 
-<!-- PROFILE SIDEBAR -->
+
+<!-- =====================================================
+     PROFILE SIDEBAR
+===================================================== -->
+
 <aside id="profileSidebar" class="profile-sidebar">
 
-  <button id="closeProfile" class="close-profile" type="button">
+  <button
+    id="closeProfile"
+    class="close-profile"
+    type="button"
+    aria-label="Close profile"
+  >
     ×
   </button>
+
+
+  <!-- PROFILE HEADER -->
 
   <div class="profile-header">
 
@@ -56,39 +72,81 @@
         alt="Profile picture"
       >
 
-      <div id="defaultAvatar" class="default-avatar">
+      <div
+        id="defaultAvatar"
+        class="default-avatar"
+      >
         👤
       </div>
 
     </div>
 
-    <h2 id="profileName">Guest</h2>
 
-    <p id="profileEmail">Not connected</p>
+    <h2 id="profileName">
+      Guest
+    </h2>
+
+
+    <p id="profileEmail">
+      Not connected
+    </p>
 
   </div>
+
+
+  <!-- PROFILE INFORMATION -->
 
   <div class="profile-info">
 
     <div class="info-box">
-      <span class="info-label">NAME</span>
-      <strong id="infoName">—</strong>
+
+      <span class="info-label">
+        NAME
+      </span>
+
+      <strong id="infoName">
+        —
+      </strong>
+
     </div>
 
+
     <div class="info-box">
-      <span class="info-label">GMAIL</span>
-      <strong id="infoEmail">—</strong>
+
+      <span class="info-label">
+        GMAIL
+      </span>
+
+      <strong id="infoEmail">
+        —
+      </strong>
+
     </div>
 
   </div>
 
-  <button id="editProfileBtn" class="profile-action" type="button">
+
+  <!-- EDIT PROFILE BUTTON -->
+
+  <button
+    id="editProfileBtn"
+    class="profile-action"
+    type="button"
+  >
     ✏️ Change information
   </button>
 
-  <div id="editProfileBox" class="edit-profile-box">
 
-    <label for="newName">Name</label>
+  <!-- EDIT PROFILE -->
+
+  <div
+    id="editProfileBox"
+    class="edit-profile-box"
+  >
+
+    <label for="newName">
+      Name
+    </label>
 
     <input
       id="newName"
@@ -97,30 +155,56 @@
       maxlength="40"
     >
 
-    <label for="avatarInput">Profile picture</label>
+
+    <label for="avatarInput">
+      Profile picture
+    </label>
 
     <input
       id="avatarInput"
       type="file"
-      accept="image/png,image/jpeg,image/webp"
+      accept="image/png,image/jpeg,image/webp,image/gif"
     >
 
-    <button id="saveProfileBtn" class="save-profile" type="button">
+
+    <button
+      id="saveProfileBtn"
+      class="save-profile"
+      type="button"
+    >
       Save changes
     </button>
 
-    <p id="profileMessage" class="profile-message"></p>
+
+    <p
+      id="profileMessage"
+      class="profile-message"
+    ></p>
 
   </div>
 
-  <button id="logoutBtn" class="logout-btn" type="button">
+
+  <!-- LOGOUT -->
+
+  <button
+    id="logoutBtn"
+    class="logout-btn"
+    type="button"
+  >
     Logout
   </button>
 
 </aside>
 
-<!-- GOOGLE LOGIN -->
-<div id="loginOverlay" class="login-overlay">
+
+<!-- =====================================================
+     GOOGLE LOGIN
+===================================================== -->
+
+<div
+  id="loginOverlay"
+  class="login-overlay"
+>
 
   <div class="login-box">
 
@@ -128,26 +212,51 @@
       MOL <span>L5IBRA</span>
     </div>
 
-    <h2>Welcome</h2>
+
+    <h2>
+      Welcome
+    </h2>
+
 
     <p class="login-description">
       Sign in with your Google account to continue.
     </p>
 
-    <button id="googleLoginBtn" class="login-btn" type="button">
+
+    <button
+      id="googleLoginBtn"
+      class="login-btn"
+      type="button"
+    >
       Continue with Google
     </button>
 
-    <p id="loginMessage" class="login-message"></p>
+
+    <p
+      id="loginMessage"
+      class="login-message"
+    ></p>
 
   </div>
 
 </div>
 
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
 <main>
 
-  <!-- HERO -->
-  <section id="home" class="hero">
+
+  <!-- ===================================================
+       HERO
+  ==================================================== -->
+
+  <section
+    id="home"
+    class="hero"
+  >
 
     <div class="hero-content">
 
@@ -155,21 +264,28 @@
         FOOTBALL • WISDOM • STORIES
       </p>
 
+
       <h1>
         THE GAME.<br>
         <span>THE STORIES.</span><br>
         THE LEGACY.
       </h1>
 
+
       <p class="lead">
         Football stories, legendary players and words that stay with you.
       </p>
 
-      <a class="cta" href="#football">
+
+      <a
+        class="cta"
+        href="#football"
+      >
         Explore the game →
       </a>
 
     </div>
+
 
     <div class="ball">
       ⚽
@@ -177,8 +293,15 @@
 
   </section>
 
-  <!-- FOOTBALL -->
-  <section id="football" class="section">
+
+  <!-- ===================================================
+       FOOTBALL
+  ==================================================== -->
+
+  <section
+    id="football"
+    class="section"
+  >
 
     <div class="section-title">
 
@@ -192,12 +315,23 @@
 
     </div>
 
-    <div id="news-grid" class="grid"></div>
+
+    <div
+      id="news-grid"
+      class="grid"
+    ></div>
 
   </section>
 
-  <!-- LEGENDS -->
-  <section id="legends" class="section alt">
+
+  <!-- ===================================================
+       LEGENDS
+  ==================================================== -->
+
+  <section
+    id="legends"
+    class="section alt"
+  >
 
     <div class="section-title">
 
@@ -211,12 +345,23 @@
 
     </div>
 
-    <div id="legends-grid" class="grid"></div>
+
+    <div
+      id="legends-grid"
+      class="grid"
+    ></div>
 
   </section>
 
-  <!-- VIDEOS -->
-  <section id="videos" class="section">
+
+  <!-- ===================================================
+       VIDEOS
+  ==================================================== -->
+
+  <section
+    id="videos"
+    class="section"
+  >
 
     <div class="section-title">
 
@@ -230,11 +375,13 @@
 
     </div>
 
+
     <div class="video-card">
 
       <div class="play">
         ▶
       </div>
+
 
       <div>
 
@@ -252,8 +399,15 @@
 
   </section>
 
-  <!-- STORE -->
-  <section id="store" class="section alt">
+
+  <!-- ===================================================
+       STORE
+  ==================================================== -->
+
+  <section
+    id="store"
+    class="section alt"
+  >
 
     <div class="section-title">
 
@@ -267,11 +421,20 @@
 
     </div>
 
-    <div id="store-grid" class="grid"></div>
+
+    <div
+      id="store-grid"
+      class="grid"
+    ></div>
 
   </section>
 
 </main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer>
 
@@ -285,7 +448,15 @@
 
 </footer>
 
-<!-- IMPORTANT: config first, script second -->
+
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
+<!-- IMPORTANT:
+     config.js MUST be before script.js
+-->
+
 <script src="config.js"></script>
 <script src="script.js"></script>
 
