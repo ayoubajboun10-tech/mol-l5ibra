@@ -3,6 +3,10 @@
    GOOGLE LOGIN + PROFILE + SUPABASE CONTENT
 ===================================================== */
 
+/* =====================================================
+   DEMO CONTENT
+===================================================== */
+
 const demoNews = [
   {
     tag: "FOOTBALL",
@@ -302,6 +306,7 @@ async function loginWithGoogle() {
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+
       options: {
         redirectTo: redirectTo
       }
@@ -309,6 +314,7 @@ async function loginWithGoogle() {
 
     if (error) {
       console.error("Google login error:", error);
+
       showLoginMessage(error.message);
 
       if (googleLoginBtn) {
@@ -318,8 +324,11 @@ async function loginWithGoogle() {
     }
 
   } catch (error) {
-    console.error(error);
-    showLoginMessage("Could not connect to Google.");
+    console.error("Google login exception:", error);
+
+    showLoginMessage(
+      error.message || "Could not connect to Google."
+    );
 
     if (googleLoginBtn) {
       googleLoginBtn.disabled = false;
@@ -369,7 +378,10 @@ if (closeProfile) {
 }
 
 if (profileOverlay) {
-  profileOverlay.addEventListener("click", closeProfileSidebar);
+  profileOverlay.addEventListener(
+    "click",
+    closeProfileSidebar
+  );
 }
 
 /* =====================================================
@@ -405,7 +417,10 @@ async function createOrUpdateProfile(user) {
     });
 
   if (error) {
-    console.error("Profile creation error:", error);
+    console.error(
+      "Profile creation error:",
+      error
+    );
   }
 }
 
@@ -427,14 +442,20 @@ async function loadUserProfile() {
     return;
   }
 
-  const { data: profile, error } = await supabase
+  const {
+    data: profile,
+    error
+  } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", user.id)
     .maybeSingle();
 
   if (error) {
-    console.error("Profile loading error:", error);
+    console.error(
+      "Profile loading error:",
+      error
+    );
   }
 
   const name =
@@ -451,14 +472,22 @@ async function loadUserProfile() {
     user.user_metadata?.picture ||
     "";
 
-  updateProfileUI(name, email, avatar);
+  updateProfileUI(
+    name,
+    email,
+    avatar
+  );
 }
 
 /* =====================================================
    UPDATE PROFILE UI
 ===================================================== */
 
-function updateProfileUI(name, email, avatar) {
+function updateProfileUI(
+  name,
+  email,
+  avatar
+) {
   if (profileName) {
     profileName.textContent = name;
   }
@@ -488,6 +517,7 @@ function updateProfileUI(name, email, avatar) {
     }
 
   } else {
+
     if (profileAvatar) {
       profileAvatar.removeAttribute("src");
       profileAvatar.style.display = "none";
@@ -504,15 +534,26 @@ function updateProfileUI(name, email, avatar) {
 ===================================================== */
 
 if (editProfileBtn) {
-  editProfileBtn.addEventListener("click", () => {
-    if (!editProfileBox) return;
 
-    editProfileBox.classList.toggle("active");
+  editProfileBtn.addEventListener(
+    "click",
+    () => {
 
-    if (editProfileBox.classList.contains("active")) {
-      newName?.focus();
+      if (!editProfileBox) return;
+
+      editProfileBox.classList.toggle(
+        "active"
+      );
+
+      if (
+        editProfileBox.classList.contains(
+          "active"
+        )
+      ) {
+        newName?.focus();
+      }
     }
-  });
+  );
 }
 
 /* =====================================================
@@ -522,21 +563,31 @@ if (editProfileBtn) {
 async function saveProfile() {
   const supabase = await initSupabase();
 
-  if (!supabase) return;
+  if (!supabase) {
+    showProfileMessage(
+      "Supabase is not connected."
+    );
+    return;
+  }
 
   const {
     data: { user }
   } = await supabase.auth.getUser();
 
   if (!user) {
-    showProfileMessage("Please login first.");
+    showProfileMessage(
+      "Please login first."
+    );
     return;
   }
 
-  const name = newName?.value.trim() || "";
+  const name =
+    newName?.value.trim() || "";
 
   if (!name) {
-    showProfileMessage("Enter your name.");
+    showProfileMessage(
+      "Enter your name."
+    );
     return;
   }
 
@@ -546,92 +597,217 @@ async function saveProfile() {
   }
 
   try {
+
     let avatarUrl = "";
 
-    if (avatarInput?.files && avatarInput.files.length > 0) {
-      const file = avatarInput.files[0];
+    /* =================================================
+       IMAGE UPLOAD
+    ================================================= */
+
+    if (
+      avatarInput?.files &&
+      avatarInput.files.length > 0
+    ) {
+
+      const file =
+        avatarInput.files[0];
+
+      /* Check image */
 
       if (!file.type.startsWith("image/")) {
-        showProfileMessage("Please select an image.");
+
+        showProfileMessage(
+          "Please select an image."
+        );
+
         return;
       }
 
-      if (file.size > 2 * 1024 * 1024) {
-        showProfileMessage("Image must be smaller than 2MB.");
+      /* Max 2MB */
+
+      if (
+        file.size >
+        2 * 1024 * 1024
+      ) {
+
+        showProfileMessage(
+          "Image must be smaller than 2MB."
+        );
+
         return;
       }
 
-      const extension =
-        file.name.split(".").pop().toLowerCase();
+      /* File extension */
+
+      let extension =
+        file.name
+          .split(".")
+          .pop()
+          .toLowerCase();
+
+      const allowedExtensions = [
+        "jpg",
+        "jpeg",
+        "png",
+        "webp",
+        "gif"
+      ];
+
+      if (
+        !allowedExtensions.includes(
+          extension
+        )
+      ) {
+
+        showProfileMessage(
+          "Please use JPG, PNG, WEBP or GIF."
+        );
+
+        return;
+      }
+
+      /* Each user gets their own folder */
 
       const filePath =
         `${user.id}/avatar.${extension}`;
 
-      const { error: uploadError } = await supabase
+      console.log(
+        "Uploading avatar:",
+        filePath
+      );
+
+      /* Upload */
+
+      const {
+        error: uploadError
+      } = await supabase
         .storage
         .from("avatars")
-        .upload(filePath, file, {
-          upsert: true,
-          contentType: file.type
-        });
+        .upload(
+          filePath,
+          file,
+          {
+            upsert: true,
+            contentType: file.type,
+            cacheControl: "3600"
+          }
+        );
+
+      /* Show real Supabase error */
 
       if (uploadError) {
-        console.error("Avatar upload error:", uploadError);
-        showProfileMessage("Could not upload the image.");
+
+        console.error(
+          "Avatar upload error:",
+          uploadError
+        );
+
+        showProfileMessage(
+          uploadError.message ||
+          "Could not upload the image."
+        );
+
         return;
       }
 
-      const { data: publicData } =
-        supabase
-          .storage
-          .from("avatars")
-          .getPublicUrl(filePath);
+      /* Get public URL */
 
-      avatarUrl = publicData.publicUrl;
+      const {
+        data: publicData
+      } = supabase
+        .storage
+        .from("avatars")
+        .getPublicUrl(
+          filePath
+        );
+
+      avatarUrl =
+        publicData?.publicUrl || "";
+
+      console.log(
+        "Avatar URL:",
+        avatarUrl
+      );
     }
+
+    /* =================================================
+       UPDATE PROFILE DATABASE
+    ================================================= */
 
     const updateData = {
       full_name: name,
-      updated_at: new Date().toISOString()
+      updated_at:
+        new Date().toISOString()
     };
 
     if (avatarUrl) {
-      updateData.avatar_url = avatarUrl;
+      updateData.avatar_url =
+        avatarUrl;
     }
 
-    const { error } = await supabase
+    const {
+      error
+    } = await supabase
       .from("profiles")
       .update(updateData)
       .eq("id", user.id);
 
     if (error) {
-      console.error("Profile update error:", error);
-      showProfileMessage("Could not save your profile.");
+
+      console.error(
+        "Profile update error:",
+        error
+      );
+
+      showProfileMessage(
+        error.message ||
+        "Could not save your profile."
+      );
+
       return;
     }
 
+    /* Reload profile */
+
     await loadUserProfile();
 
-    showProfileMessage("Profile updated successfully.");
+    showProfileMessage(
+      "Profile updated successfully."
+    );
+
+    /* Reset file input */
 
     if (avatarInput) {
       avatarInput.value = "";
     }
 
   } catch (error) {
-    console.error(error);
-    showProfileMessage("Something went wrong.");
+
+    console.error(
+      "Profile save error:",
+      error
+    );
+
+    showProfileMessage(
+      error.message ||
+      "Something went wrong."
+    );
 
   } finally {
+
     if (saveProfileBtn) {
       saveProfileBtn.disabled = false;
-      saveProfileBtn.textContent = "Save changes";
+      saveProfileBtn.textContent =
+        "Save changes";
     }
   }
 }
 
 if (saveProfileBtn) {
-  saveProfileBtn.addEventListener("click", saveProfile);
+  saveProfileBtn.addEventListener(
+    "click",
+    saveProfile
+  );
 }
 
 /* =====================================================
@@ -639,30 +815,43 @@ if (saveProfileBtn) {
 ===================================================== */
 
 if (logoutBtn) {
-  logoutBtn.addEventListener("click", async () => {
-    const supabase = await initSupabase();
 
-    if (!supabase) return;
+  logoutBtn.addEventListener(
+    "click",
+    async () => {
 
-    logoutBtn.disabled = true;
-    logoutBtn.textContent = "Logging out...";
+      const supabase =
+        await initSupabase();
 
-    const { error } = await supabase.auth.signOut();
+      if (!supabase) return;
 
-    if (error) {
-      console.error(error);
+      logoutBtn.disabled = true;
+      logoutBtn.textContent =
+        "Logging out...";
+
+      const {
+        error
+      } = await supabase.auth.signOut();
+
+      if (error) {
+
+        console.error(error);
+
+        logoutBtn.disabled = false;
+        logoutBtn.textContent =
+          "Logout";
+
+        return;
+      }
+
+      closeProfileSidebar();
+      showLogin();
 
       logoutBtn.disabled = false;
-      logoutBtn.textContent = "Logout";
-      return;
+      logoutBtn.textContent =
+        "Logout";
     }
-
-    closeProfileSidebar();
-    showLogin();
-
-    logoutBtn.disabled = false;
-    logoutBtn.textContent = "Logout";
-  });
+  );
 }
 
 /* =====================================================
@@ -670,7 +859,9 @@ if (logoutBtn) {
 ===================================================== */
 
 async function checkLogin() {
-  const supabase = await initSupabase();
+
+  const supabase =
+    await initSupabase();
 
   if (!supabase) return;
 
@@ -679,29 +870,48 @@ async function checkLogin() {
   } = await supabase.auth.getSession();
 
   if (session?.user) {
+
     hideLogin();
 
-    await createOrUpdateProfile(session.user);
+    await createOrUpdateProfile(
+      session.user
+    );
+
     await loadUserProfile();
 
   } else {
+
     showLogin();
   }
 
-  supabase.auth.onAuthStateChange(async (event, session) => {
+  supabase.auth.onAuthStateChange(
+    async (
+      event,
+      session
+    ) => {
 
-    if (event === "SIGNED_IN" && session?.user) {
-      hideLogin();
+      if (
+        event === "SIGNED_IN" &&
+        session?.user
+      ) {
 
-      await createOrUpdateProfile(session.user);
-      await loadUserProfile();
+        hideLogin();
+
+        await createOrUpdateProfile(
+          session.user
+        );
+
+        await loadUserProfile();
+      }
+
+      if (
+        event === "SIGNED_OUT"
+      ) {
+
+        showLogin();
+      }
     }
-
-    if (event === "SIGNED_OUT") {
-      showLogin();
-    }
-
-  });
+  );
 }
 
 /* =====================================================
